@@ -1,0 +1,146 @@
+@import "tailwindcss";
+@import "@fontsource/pixelify-sans/400.css";
+@import "@fontsource/pixelify-sans/600.css";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
+
+@theme {
+  --color-vintage-bg: #ffffff;
+  --color-vintage-surface: #f7f7f5;
+  --color-vintage-ink: #1a1a1a;
+  --color-vintage-border: rgba(26, 26, 26, 0.85);
+  --color-vintage-muted: #999999;
+  --color-vintage-muted-light: #cccccc;
+
+  --font-vintage-display: "Pixelify Sans", monospace;
+  --font-vintage-body: "Space Mono", monospace;
+
+  --radius-vintage: 0.5rem;
+  --radius-vintage-sm: 0.25rem;
+}
+
+body {
+  background-color: var(--color-vintage-bg);
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,.02),
+      rgba(0,0,0,.02) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,.02),
+      rgba(0,0,0,.02) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+}
+
+@layer base {
+  body {
+    font-family: var(--font-vintage-body);
+  }
+  h1, h2, h3 {
+    font-family: var(--font-vintage-display);
+  }
+}
+
+@utility btn {
+    @apply
+        inline-flex
+        items-center
+        justify-center
+        px-4
+        py-1.5
+        text-sm
+        font-bold
+        rounded-vintage-sm
+        border
+        transition;
+}
+
+.btn-primary {
+    @apply
+        btn
+        bg-vintage-ink
+        text-white
+        border-vintage-border
+        hover:bg-gray-800;
+}
+
+.btn-secondary {
+    @apply
+        btn
+        bg-white
+        border-vintage-border
+        hover:bg-vintage-surface;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn:disabled {
+    @apply
+        bg-vintage-surface
+        text-vintage-muted
+        border-vintage-muted-light
+        cursor-not-allowed;
+}
+
+.input {
+    @apply
+        w-full
+        px-3
+        py-2
+        text-sm
+        border
+        rounded-vintage-sm
+        border-vintage-border;
+
+    outline: none;
+}
+
+.input:focus {
+    outline: 2px solid var(--color-vintage-ink);
+    outline-offset: 1px;
+}
+.label {
+    @apply
+        block
+        mb-1.5
+        text-sm
+        font-bold;
+}
+
+.list {
+    @apply text-sm;
+}
+
+.list-item {
+    @apply
+        flex
+        items-center
+        gap-2
+        py-2;
+}
+
+.list-item + .list-item {
+    @apply border-t border-vintage-muted-light;
+}
+
+.card {
+  background-color: white;
+
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.55) 0px,
+      rgba(255,255,255,.55) 1px,
+      rgba(0,0,0,.02) 1px,
+      rgba(0,0,0,.02) 2px
+    );
+}

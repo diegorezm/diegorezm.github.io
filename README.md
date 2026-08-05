@@ -41,3 +41,23 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+# Portfolio
+
+Astro portfolio site.
+
+## GitHub Pages
+
+The repository includes a GitHub Actions workflow at `.github/workflows/deploy.yml`.
+It deploys the `main` branch using the official Astro GitHub Action. The Astro
+config reads `GITHUB_REPOSITORY` in CI to set the correct GitHub Pages URL and
+repository base path automatically.
+
+In the repository settings, open **Pages**, choose **GitHub Actions** as the
+source, and push to `main` to deploy.
+
+## Development
+
+```sh
+pnpm install
+pnpm dev
+```
