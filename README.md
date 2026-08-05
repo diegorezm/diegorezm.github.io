@@ -1,43 +1,32 @@
-# Astro Starter Kit: Minimal
+# Portfolio
+
+A fast, prerendered Preact/Vite portfolio that behaves like a small Macintosh desktop.
+
+The Finder shell stays mounted while the inner page changes, so window position,
+size, and other desktop state persist across navigation.
+
+## Development
 
 ```sh
-pnpm create astro@latest -- --template minimal
+pnpm install
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Build and preview the static output with:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+pnpm build
+pnpm preview
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+`preact-iso` handles page navigation and `@preact/preset-vite` prerenders the
+routes during the production build.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## GitHub Pages
 
-Any static assets, like images, can be placed in the `public/` directory.
+`.github/workflows/deploy.yml` deploys `main` through GitHub Pages. The Vite
+config reads `GITHUB_REPOSITORY` in CI and automatically sets the repository
+subpath for project pages.
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+In the repository settings, open **Pages**, choose **GitHub Actions** as the
+source, and push to `main` to deploy.
