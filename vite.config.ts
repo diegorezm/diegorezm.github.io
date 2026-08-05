@@ -11,6 +11,7 @@ export default defineConfig({
     preact({
       prerender: {
         enabled: true,
+        renderTarget: "#app",
         additionalPrerenderRoutes: ["/pt-br/"],
       },
     }),
