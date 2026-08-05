@@ -1,8 +1,8 @@
-import { LocationProvider, Router, Route } from "preact-iso";
+import { LocationProvider, Route, Router } from "preact-iso";
 import FinderApp, { AboutPage, ContactPage, DesktopPage, WorkPage } from "./components/finder-app";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const route = (page = "") => page ? `${base}/${page}/` : `${base}/`;
+const route = (page = "") => (page ? `${base}/${page}/` : `${base}/`);
 
 export function App({ url }: { url?: string }) {
   return (
@@ -11,6 +11,7 @@ export function App({ url }: { url?: string }) {
       <FinderApp>
         <Router>
           <Route path={route()} component={DesktopPage} />
+          <Route path={route("pt-br")} component={DesktopPage} />
           <Route path={route("about")} component={AboutPage} />
           <Route path={route("work")} component={WorkPage} />
           <Route path={route("contact")} component={ContactPage} />
