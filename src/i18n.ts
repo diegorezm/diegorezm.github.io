@@ -4,7 +4,7 @@ export const translations = {
   en: {
     seoTitle: "Diego Rezende | Full-Stack Developer",
     seoDescription:
-      "Diego Rezende is a Full-Stack Developer specializing in TypeScript, Node.js and React. Open-source enthusiast and Linux user based in Brazil.",
+      "Diego Rezende is a full-stack developer based in Brazil who works with TypeScript, Node.js, and React, enjoys open source, and uses Linux.",
     languageName: "English",
     languageSwitchLabel: "Language",
     languageSwitchShort: "PT",
@@ -39,18 +39,19 @@ export const translations = {
     helloWorldSecond: "world.",
     systemStamp: "system 7.5 / human 1.0",
     openFolder: "Open a folder",
-    exploreDesktop: "Explore the desktop",
-    aboutSubtitle: "A little context",
-    workSubtitle: "Four things worth opening",
-    contactSubtitle: "Start a conversation",
+    exploreDesktop: "Explore my desktop",
+    aboutSubtitle: "The short version",
+    workSubtitle: "Four projects, up close",
+    contactSubtitle: "Say hello",
     plainText: "Plain text document",
-    aboutTitle: "A bit about me",
-    lastOpened: "Last opened recently · 4 KB",
-    aboutLead: "I like making digital things feel obvious, considered, and a little bit human.",
+    aboutTitle: "About me",
+    lastOpened: "Opened recently · 4 KB",
+    aboutLead:
+      "I care about clear interfaces, thoughtful details, and software that feels good to use.",
     aboutBodyOne:
-      "I work across design and development, usually somewhere between a rough idea and the moment it becomes useful. My favorite projects have a strong point of view, a clear audience, and enough room for the details to matter.",
+      "I work across design and development, from the first sketch to something people can actually use. The projects I enjoy most have a clear audience, a distinct point of view, and details worth getting right.",
     aboutBodyTwo:
-      "This portfolio is intentionally built like a small desktop: a place to browse, open things, and find your way around without a tour guide.",
+      "I built this portfolio as a small desktop. Browse around, open things, and find your way without a tour guide.",
     basedIn: "Based in",
     basedInText: "Brazil · Available remotely",
     workingWith: "Usually working with",
@@ -64,19 +65,19 @@ export const translations = {
     outgoingMessage: "Outgoing message",
     contactTitle: "Let’s talk.",
     contactIntro:
-      "Feel free to reach out to collaborate, discuss opportunities, or just talk tech.",
-    bestForDetails: "Best for project details",
-    startWithWork: "Start with the work",
-    browseProjects: "Browse the selected projects",
-    askAboutWork: "Ask me about this work",
+      "Have a project in mind, want to discuss an opportunity, or just feel like talking tech? Send me a message.",
+    bestForDetails: "For project details",
+    startWithWork: "Browse my work",
+    browseProjects: "Open the selected projects",
+    askAboutWork: "Discuss this project",
     projects: [
       {
         title: "Vibe",
         category: "TypeScript · Node.js · TanStack",
         summary:
-          "A chatbot-powered website builder that generates and modifies Next.js code from user instructions.",
+          "A chatbot-based website builder that generates and modifies Next.js code from user instructions.",
         details:
-          "Vibe turns a conversational brief into a working project, then lets the user keep iterating on the generated code.",
+          "Tell Vibe what you want and it turns the conversation into a working project. From there, users can keep refining the generated code.",
       },
       {
         title: "letmeask",
@@ -84,22 +85,21 @@ export const translations = {
         summary:
           "An AI tool that transcribes audio and lets users ask questions about the content.",
         details:
-          "The project combines audio transcription with a focused question-and-answer flow for exploring recorded content.",
+          "It combines audio transcription with a question-and-answer interface so users can explore recorded content in more detail.",
       },
       {
         title: "FastShopping",
         category: "Java · Spring Boot · Redis",
-        summary:
-          "Performance optimization experiments on a single-node API backed by PostgreSQL and Redis.",
+        summary: "Experiments in optimizing a single-node API backed by PostgreSQL and Redis.",
         details:
-          "The work explores API performance under stress, measuring how caching and data access choices affect a Spring Boot service.",
+          "It tests a Spring Boot API under stress and measures how caching and data-access choices affect performance.",
       },
       {
         title: "llm-notebook",
         category: "Rust · Ollama · RAG",
-        summary: "Ask AI about your documents, even without internet access.",
+        summary: "Ask AI questions about your documents, even without internet access.",
         details:
-          "A local-first document assistant built with Rust and Ollama using retrieval-augmented generation.",
+          "A local-first document assistant built with Rust, Ollama, and retrieval-augmented generation.",
       },
     ],
     projectCategory: (category: string, year: string) => `${category} / ${year}`,
@@ -107,11 +107,11 @@ export const translations = {
   pt: {
     seoTitle: "Diego Rezende | Desenvolvedor Full-Stack",
     seoDescription:
-      "Diego Rezende é um Desenvolvedor Full-Stack especializado em TypeScript, Node.js e React. Entusiasta de código aberto e usuário de Linux no Brasil.",
+      "Diego Rezende é desenvolvedor full-stack no Brasil. Trabalha com TypeScript, Node.js e React, gosta de código aberto e usa Linux.",
     languageName: "Português",
     languageSwitchLabel: "Idioma",
     languageSwitchShort: "EN",
-    available: "Disponível para projetos selecionados",
+    available: "Disponível para alguns projetos",
     availableShort: "Disponível",
     about: "Sobre",
     work: "Trabalho",
@@ -132,7 +132,7 @@ export const translations = {
     github: "GitHub",
     linkedin: "LinkedIn",
     memory: "Memória disponível: bastante",
-    welcome: "Boas-vindas à minha área de trabalho",
+    welcome: "Bem-vindo ao meu desktop",
     heroTitleFirst: "Diego",
     heroTitleSecond: "Rezende.",
     heroIntro:
@@ -143,22 +143,22 @@ export const translations = {
     helloWorldSecond: "mundo.",
     systemStamp: "sistema 7.5 / humano 1.0",
     openFolder: "Abrir uma pasta",
-    exploreDesktop: "Explore a área de trabalho",
-    aboutSubtitle: "Um pouco de contexto",
-    workSubtitle: "Quatro coisas que vale abrir",
-    contactSubtitle: "Começar uma conversa",
+    exploreDesktop: "Explore meu desktop",
+    aboutSubtitle: "Em poucas palavras",
+    workSubtitle: "Quatro projetos de perto",
+    contactSubtitle: "Mande um oi",
     plainText: "Documento de texto simples",
-    aboutTitle: "Um pouco sobre mim",
+    aboutTitle: "Sobre mim",
     lastOpened: "Aberto recentemente · 4 KB",
     aboutLead:
-      "Gosto de fazer produtos digitais parecerem óbvios, cuidadosos e um pouco mais humanos.",
+      "Gosto de criar interfaces claras, cuidar dos detalhes e fazer software agradável de usar.",
     aboutBodyOne:
-      "Trabalho entre design e desenvolvimento, geralmente em algum lugar entre uma ideia inicial e o momento em que ela se torna útil. Meus projetos favoritos têm uma visão clara, um público definido e espaço suficiente para os detalhes importarem.",
+      "Trabalho com design e desenvolvimento, do primeiro esboço até algo que as pessoas possam usar de verdade. Os projetos de que mais gosto têm público bem definido, uma visão própria e detalhes que merecem atenção.",
     aboutBodyTwo:
-      "Este portfólio foi pensado como uma pequena área de trabalho: um lugar para navegar, abrir coisas e encontrar seu caminho sem precisar de um tour guiado.",
+      "Criei este portfólio como um pequeno desktop. Pode navegar, abrir o que quiser e se virar por aqui sem precisar de instruções.",
     basedIn: "Onde estou",
     basedInText: "Brasil · Disponível remotamente",
-    workingWith: "Trabalhando com",
+    workingWith: "Tecnologias que mais uso",
     workingWithText: "TypeScript · Node.js · React · Linux",
     interestedIn: "Tenho interesse em",
     interestedInText: "Interfaces, sistemas e pequenos experimentos para a web",
@@ -169,19 +169,19 @@ export const translations = {
     outgoingMessage: "Mensagem de saída",
     contactTitle: "Vamos conversar.",
     contactIntro:
-      "Sinta-se à vontade para entrar em contato para colaborar, discutir oportunidades ou apenas falar sobre tecnologia.",
-    bestForDetails: "Ideal para detalhes do projeto",
-    startWithWork: "Comece pelo trabalho",
-    browseProjects: "Veja os projetos selecionados",
-    askAboutWork: "Fale comigo sobre este trabalho",
+      "Tem um projeto em mente, quer conversar sobre uma oportunidade ou só trocar uma ideia sobre tecnologia? Mande uma mensagem.",
+    bestForDetails: "Para detalhes de projetos",
+    startWithWork: "Conheça meu trabalho",
+    browseProjects: "Abra os projetos selecionados",
+    askAboutWork: "Conversar sobre este projeto",
     projects: [
       {
         title: "Vibe",
         category: "TypeScript · Node.js · TanStack",
         summary:
-          "Um criador de sites movido por chatbot que gera e modifica código Next.js a partir das instruções do usuário.",
+          "Um criador de sites com chatbot que gera e modifica código Next.js a partir das instruções do usuário.",
         details:
-          "O Vibe transforma um briefing em conversa em um projeto funcional e permite continuar iterando no código gerado.",
+          "Diga ao Vibe o que você quer, e ele transforma a conversa em um projeto funcional. Depois, você pode continuar ajustando o código gerado.",
       },
       {
         title: "letmeask",
@@ -189,22 +189,21 @@ export const translations = {
         summary:
           "Uma ferramenta de IA que transcreve áudio e permite fazer perguntas sobre o conteúdo.",
         details:
-          "O projeto combina transcrição de áudio com um fluxo focado de perguntas e respostas para explorar conteúdo gravado.",
+          "Combina transcrição de áudio com uma interface de perguntas e respostas para explorar melhor o conteúdo gravado.",
       },
       {
         title: "FastShopping",
         category: "Java · Spring Boot · Redis",
-        summary:
-          "Experimentos de otimização de desempenho em uma API de nó único com PostgreSQL e Redis.",
+        summary: "Experimentos para otimizar uma API de nó único com PostgreSQL e Redis.",
         details:
-          "O trabalho explora o desempenho de APIs sob estresse, medindo como cache e acesso a dados afetam um serviço Spring Boot.",
+          "Testa uma API Spring Boot sob estresse e mede como as escolhas de cache e acesso a dados afetam o desempenho.",
       },
       {
         title: "llm-notebook",
         category: "Rust · Ollama · RAG",
-        summary: "Pergunte à IA sobre seus documentos, mesmo sem acesso à internet.",
+        summary: "Faça perguntas à IA sobre seus documentos, mesmo sem acesso à internet.",
         details:
-          "Um assistente de documentos local construído com Rust e Ollama usando geração aumentada por recuperação.",
+          "Um assistente local para documentos, feito com Rust, Ollama e geração aumentada por recuperação.",
       },
     ],
     projectCategory: (category: string, year: string) => `${category} / ${year}`,

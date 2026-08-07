@@ -621,7 +621,7 @@ export function ContactPage() {
             <small>
               {language === "en"
                 ? "Open-source work and experiments"
-                : "Trabalhos open source e experimentos"}
+                : "Projetos de código aberto e experimentos"}
             </small>
           </span>
           <ArrowUpRight size={15} aria-hidden="true" />
@@ -637,7 +637,9 @@ export function ContactPage() {
           </span>
           <span>
             <strong>LinkedIn</strong>
-            <small>{language === "en" ? "Connect professionally" : "Conexões profissionais"}</small>
+            <small>
+              {language === "en" ? "My professional profile" : "Meu perfil profissional"}
+            </small>
           </span>
           <ArrowUpRight size={15} aria-hidden="true" />
         </a>
