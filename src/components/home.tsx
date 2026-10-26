@@ -1,8 +1,8 @@
-import { ArrowDown, ArrowUpRight, Copy, Mail, Moon, Sun } from "lucide-preact";
+import { ArrowRight, ArrowUpRight, Copy, Mail, Moon, Sun } from "lucide-preact";
 import { useEffect, useState } from "preact/hooks";
-import { confetti, prefersReducedMotion } from "../fx";
-import { EMAIL, GITHUB, type Language, LINKEDIN, marquee, type Translation } from "../i18n";
-import Stickers from "./stickers";
+import { prefersReducedMotion } from "../fx";
+import { EMAIL, GITHUB, type Language, LINKEDIN, type Translation } from "../i18n";
+import Plate from "./plate";
 import Terminal from "./terminal";
 
 type Props = {
@@ -13,38 +13,31 @@ type Props = {
   toggleLanguage: () => void;
 };
 
-const GithubIcon = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">
-    <path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z" />
-  </svg>
-);
+const pad = (n: number) => String(n).padStart(2, "0");
 
-const LinkedinIcon = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">
-    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z" />
-  </svg>
-);
-
-/** Splits a word into letters that bounce individually on hover. */
-const Bouncy = ({ word }: { word: string }) => (
-  <span class="bouncy">
-    <span class="sr-only">{word}</span>
-    {[...word].map((ch, i) => (
-      <span key={i} aria-hidden="true" style={{ "--i": i }}>
-        {ch}
-      </span>
-    ))}
-  </span>
-);
+function useClock(language: Language) {
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => {
+    setNow(new Date());
+    const id = window.setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  if (!now) return { date: "-- --- ----", time: "--:--:--" };
+  const month = now.toLocaleString(language === "pt" ? "pt-BR" : "en-GB", { month: "short" });
+  return {
+    date: `${pad(now.getDate())} ${month.replace(".", "").toUpperCase()} ${now.getFullYear()}`,
+    time: `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`,
+  };
+}
 
 export default function Home({ language, t, theme, toggleTheme, toggleLanguage }: Props) {
   const [toast, setToast] = useState<string | null>(null);
+  const clock = useClock(language);
 
-  const copyEmail = async (event: MouseEvent) => {
+  const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(EMAIL);
-      setToast(t.hero.copied);
-      confetti(event.clientX, event.clientY, 60);
+      setToast(t.contact.copied);
     } catch {
       window.location.href = `mailto:${EMAIL}`;
     }
@@ -72,306 +65,291 @@ export default function Home({ language, t, theme, toggleTheme, toggleLanguage }
           }
         }
       },
-      { rootMargin: "0px 0px -10% 0px" },
+      { rootMargin: "0px 0px -8% 0px" },
     );
     for (const el of items) observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // Konami code turns on party mode.
-  useEffect(() => {
-    const code = [
-      "ArrowUp",
-      "ArrowUp",
-      "ArrowDown",
-      "ArrowDown",
-      "ArrowLeft",
-      "ArrowRight",
-      "ArrowLeft",
-      "ArrowRight",
-      "b",
-      "a",
-    ];
-    let index = 0;
-    const onKey = (event: KeyboardEvent) => {
-      index =
-        event.key.toLowerCase() === code[index].toLowerCase()
-          ? index + 1
-          : event.key === code[0]
-            ? 1
-            : 0;
-      if (index === code.length) {
-        index = 0;
-        document.documentElement.classList.add("party");
-        confetti(window.innerWidth / 4, window.innerHeight / 2);
-        confetti((window.innerWidth / 4) * 3, window.innerHeight / 2);
-        window.setTimeout(() => document.documentElement.classList.remove("party"), 6000);
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  const tilt = (event: PointerEvent) => {
-    if (event.pointerType !== "mouse" || prefersReducedMotion()) return;
-    const el = event.currentTarget as HTMLElement;
-    const r = el.getBoundingClientRect();
-    const x = (event.clientX - r.left) / r.width - 0.5;
-    const y = (event.clientY - r.top) / r.height - 0.5;
-    el.style.setProperty("--rx", `${(-y * 8).toFixed(2)}deg`);
-    el.style.setProperty("--ry", `${(x * 10).toFixed(2)}deg`);
-  };
-  const untilt = (event: PointerEvent) => {
-    const el = event.currentTarget as HTMLElement;
-    el.style.setProperty("--rx", "0deg");
-    el.style.setProperty("--ry", "0deg");
-  };
-
-  const accents = ["lime", "pink", "blue", "orange"];
+  const stateLabel = { current: t.career.current, done: t.career.done, merit: t.career.merit };
 
   return (
     <>
-      <a class="skip" href="#work">
+      <a class="skip" href="#works">
         Skip to content
       </a>
 
-      <nav class="nav">
-        <a class="logo" href="#top" aria-label="Diego Rezende">
-          dr<span>.</span>
-        </a>
-        <div class="nav__links">
-          <a href="#work">{t.nav.work}</a>
-          <a href="#xp">{t.nav.xp}</a>
-          <a href="#stack">{t.nav.stack}</a>
-          <a href="#contact">{t.nav.contact}</a>
-        </div>
-        <div class="nav__tools">
-          <button type="button" class="chip-btn" onClick={toggleLanguage} aria-label={t.langLabel}>
+      <div class="topbar">
+        <span class="topbar__status">
+          <i class="led" aria-hidden="true" /> {t.status.mode}
+        </span>
+        <span class="topbar__clock" aria-hidden="true">
+          {clock.date} <b>·</b> {clock.time}
+        </span>
+        <span class="topbar__tools">
+          <button type="button" class="tool" onClick={toggleLanguage} aria-label={t.langLabel}>
             {t.langShort}
           </button>
-          <button type="button" class="chip-btn" onClick={toggleTheme} aria-label={t.themeLabel}>
-            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          <button type="button" class="tool" onClick={toggleTheme} aria-label={t.themeLabel}>
+            {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
           </button>
-        </div>
-      </nav>
-
-      <header class="hero" id="top">
-        <Stickers hire={t.stickers.hire} />
-        <div class="hero__grid">
-          <div class="hero__copy">
-            <p class="badge">
-              <span class="pulse" aria-hidden="true" />
-              {t.hero.badge}
-            </p>
-            <p class="hero__hello">{t.hero.hello}</p>
-            <h1 class="hero__name">
-              <Bouncy word={t.hero.first} />
-              <span class="hero__last">
-                <Bouncy word={t.hero.last} />
-              </span>
-            </h1>
-            <p class="hero__lead">{t.hero.lead}</p>
-            <div class="hero__ctas">
-              <a class="btn btn--lime" href="#work">
-                {t.hero.ctaWork} <ArrowDown size={18} aria-hidden="true" />
-              </a>
-              <button type="button" class="btn" onClick={copyEmail}>
-                <Copy size={18} aria-hidden="true" /> {t.hero.ctaEmail}
-              </button>
-            </div>
-            <ul class="facts">
-              {t.hero.facts.map((f) => (
-                <li key={f}>{f}</li>
-              ))}
-            </ul>
-            <p class="drag-hint">{t.hero.dragHint} ↗</p>
-          </div>
-          <Terminal language={language} t={t} onTheme={toggleTheme} onLang={toggleLanguage} />
-        </div>
-      </header>
-
-      <div class="marquees" aria-hidden="true">
-        {[0, 1].map((row) => (
-          <div key={row} class={`marquee marquee--${row ? "pink" : "lime"}`}>
-            <div class="marquee__track">
-              {[...marquee, ...marquee].map((item, i) => (
-                <span key={i}>
-                  {item} <b>✦</b>
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
+        </span>
       </div>
 
-      <main>
-        <section class="section" id="work">
-          <SectionHead
-            eyebrow={t.projects.eyebrow}
-            title={t.projects.title}
-            lead={t.projects.lead}
-          />
-          <div class="projects">
-            {t.projects.items.map((p, i) => (
+      <header class="masthead">
+        <a class="brand" href="#top" aria-label="Diego Rezende">
+          <span class="brand__mark" aria-hidden="true">
+            R
+          </span>
+          <span>
+            <span class="brand__name">Rezende</span>
+            <span class="brand__sub">{t.archive}</span>
+          </span>
+        </a>
+        <nav class="menu" aria-label="Sections">
+          <a href="#works">{t.nav.works}</a>
+          <a href="#career">{t.nav.career}</a>
+          <a href="#inventory">{t.nav.inventory}</a>
+          <a href="#console">{t.nav.console}</a>
+          <a href="#contact">{t.nav.contact}</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero__intro">
+            <p class="label">{t.hero.kicker}</p>
+            <h1 class="hero__name">
+              Diego
+              <br />
+              Rezende<span class="dot">.</span>
+            </h1>
+            <p class="hero__lead">{t.hero.lead}</p>
+            <div class="actions">
+              <a class="btn btn--solid" href="#works">
+                {t.hero.ctaWorks} <ArrowRight size={16} aria-hidden="true" />
+              </a>
+              <a class="btn" href="#contact">
+                {t.hero.ctaContact}
+              </a>
+            </div>
+          </div>
+
+          <aside class="panel record" aria-label={t.record.title}>
+            <div class="panel__head">
+              <span>{t.record.title}</span>
+              <span class="corner" aria-hidden="true">
+                ⌗
+              </span>
+            </div>
+            <div class="record__body">
+              <p class="label">{t.record.id}</p>
+              <p class="record__id">DEV-2026-0001</p>
+              <dl class="fields">
+                {t.record.fields.map(([k, v]) => (
+                  <div key={k}>
+                    <dt>{k}</dt>
+                    <dd class={v.startsWith("●") ? "is-live" : ""}>{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div class="record__note">
+                <p class="label">{t.record.seeking}</p>
+                <p>{t.record.seekingText}</p>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="stats panel" aria-label="Overview">
+          {t.stats.map((s) => (
+            <div key={s.label} class="stat">
+              <p class="label">{s.label}</p>
+              <p class="stat__value">{s.value}</p>
+              <p class="stat__note">{s.note}</p>
+            </div>
+          ))}
+        </section>
+
+        <section class="section" id="works">
+          <SectionHead eyebrow={t.works.eyebrow} title={t.works.title} lead={t.works.lead} />
+          <div class="works">
+            {t.works.items.map((p, i) => (
               <a
-                key={p.name}
-                class={`project card accent-${accents[i % accents.length]}`}
+                key={p.id}
+                class="work panel"
                 href={`${GITHUB}/${p.repo}`}
                 target="_blank"
                 rel="noreferrer"
-                onPointerMove={tilt}
-                onPointerLeave={untilt}
                 data-reveal
-                style={{ "--delay": `${i * 80}ms` }}
+                style={{ "--delay": `${(i % 3) * 70}ms` }}
               >
-                <div class="project__top">
-                  <span class="project__num">0{i + 1}</span>
-                  <span class="project__tag">{p.tag}</span>
+                <div class="work__plate">
+                  <Plate kind={p.plate} label={p.name} />
+                  <span class="work__id">{p.id}</span>
                 </div>
-                <h3>{p.name}</h3>
-                <p>{p.blurb}</p>
-                <div class="project__foot">
-                  <ul class="pills">
+                <div class="work__body">
+                  <h3>
+                    {p.name}
+                    <ArrowUpRight size={16} aria-hidden="true" />
+                  </h3>
+                  <dl class="meta">
+                    <div>
+                      <dt>{t.works.type}</dt>
+                      <dd>{p.type}</dd>
+                    </div>
+                    <div>
+                      <dt>{t.works.status}</dt>
+                      <dd class={p.active ? "is-live" : "is-muted"}>
+                        {p.active ? `● ${t.works.active}` : `○ ${t.works.archived}`}
+                      </dd>
+                    </div>
+                  </dl>
+                  <p>{p.blurb}</p>
+                  <ul class="tags">
                     {p.stack.map((s) => (
                       <li key={s}>{s}</li>
                     ))}
                   </ul>
-                  <span class="project__go">
-                    {t.projects.view} <ArrowUpRight size={18} aria-hidden="true" />
-                  </span>
                 </div>
               </a>
             ))}
           </div>
         </section>
 
-        <section class="section" id="xp">
-          <SectionHead eyebrow={t.xp.eyebrow} title={t.xp.title} lead={t.xp.lead} />
-          <ol class="gitlog">
-            {t.xp.items.map((x, i) => (
-              <li key={x.hash} class={`commit accent-${accents[i % accents.length]}`} data-reveal>
-                <span class="commit__dot" aria-hidden="true" />
-                <div class="commit__meta">
-                  <code class="commit__hash">{x.hash}</code>
-                  {x.refs.map((r) => (
-                    <code key={r} class="commit__ref">
-                      {r}
-                    </code>
+        <section class="section" id="career">
+          <SectionHead eyebrow={t.career.eyebrow} title={t.career.title} lead={t.career.lead} />
+          <div class="panel ledger" data-reveal>
+            <div class="ledger__row ledger__row--head" aria-hidden="true">
+              {t.career.cols.map((c) => (
+                <span key={c}>{c}</span>
+              ))}
+            </div>
+            {t.career.items.map((x, i) => (
+              <details key={x.period} class="ledger__entry" open={i === 0}>
+                <summary class="ledger__row">
+                  <span class="ledger__period">{x.period}</span>
+                  <span class="ledger__role">{x.role}</span>
+                  <span class="ledger__org">{x.org}</span>
+                  <span class={`chip chip--${x.state}`}>
+                    {stateLabel[x.state as keyof typeof stateLabel]}
+                  </span>
+                </summary>
+                <ul class="ledger__notes">
+                  {x.bullets.map((b) => (
+                    <li key={b}>{b}</li>
                   ))}
-                  <code class="commit__msg">{x.msg}</code>
-                </div>
-                <div class="commit__card card">
-                  <div class="commit__head">
-                    <div>
-                      <h3>{x.role}</h3>
-                      <p class="commit__org">{x.org}</p>
-                    </div>
-                    <span class="commit__period">{x.period}</span>
-                  </div>
-                  <ul class="commit__bullets">
-                    {x.bullets.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
+                </ul>
+              </details>
             ))}
-            <li class="commit commit--edu" data-reveal>
-              <span class="commit__dot" aria-hidden="true" />
-              <div class="commit__meta">
-                <code class="commit__hash">{t.xp.edu.hash}</code>
-                {t.xp.edu.refs.map((r) => (
-                  <code key={r} class="commit__ref">
-                    {r}
-                  </code>
-                ))}
-                <code class="commit__msg">{t.xp.edu.msg} 🎓</code>
-              </div>
-              <div class="commit__card card">
-                <div class="commit__head">
-                  <div>
-                    <h3>{t.xp.edu.role}</h3>
-                    <p class="commit__org">{t.xp.edu.org}</p>
-                  </div>
-                  <span class="commit__period">{t.xp.edu.period}</span>
-                </div>
-              </div>
-            </li>
-          </ol>
+            <div class="ledger__row ledger__row--edu">
+              <span class="ledger__period">{t.career.edu.period}</span>
+              <span class="ledger__role">{t.career.edu.role}</span>
+              <span class="ledger__org">{t.career.edu.org}</span>
+              <span class="chip chip--edu">{t.career.edu.label}</span>
+            </div>
+          </div>
         </section>
 
-        <section class="section" id="stack">
-          <SectionHead eyebrow={t.stack.eyebrow} title={t.stack.title} lead={t.stack.lead} />
+        <section class="section" id="inventory">
+          <SectionHead
+            eyebrow={t.inventory.eyebrow}
+            title={t.inventory.title}
+            lead={t.inventory.lead}
+          />
           <div class="inventory">
-            {t.stack.groups.map((g, i) => (
+            {t.inventory.groups.map((g, i) => (
               <div
                 key={g.name}
-                class={`slot-group card accent-${g.color}`}
+                class="panel group"
                 data-reveal
-                style={{ "--delay": `${i * 70}ms` }}
+                style={{ "--delay": `${i * 60}ms` }}
               >
-                <h3>{g.name}</h3>
-                <ul>
+                <div class="panel__head">
+                  <span>{g.name}</span>
+                  <span>{pad(g.items.length)}</span>
+                </div>
+                <ul class="tags">
                   {g.items.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
               </div>
             ))}
+            <div class="panel creds" data-reveal>
+              <div class="panel__head">
+                <span>{t.inventory.credentials}</span>
+                <span>{pad(t.inventory.creds.length)}</span>
+              </div>
+              <dl>
+                {t.inventory.creds.map(([k, v]) => (
+                  <div key={k}>
+                    <dt>{k}</dt>
+                    <dd>{v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
-          <h3 class="sub-title">{t.stack.achievementsTitle}</h3>
-          <ul class="achievements">
-            {t.stack.achievements.map((a, i) => (
-              <li
-                key={a.title}
-                class="achievement card"
-                data-reveal
-                style={{ "--delay": `${i * 60}ms` }}
-              >
-                <span class="achievement__icon" aria-hidden="true">
-                  {a.icon}
-                </span>
-                <div>
-                  <strong>{a.title}</strong>
-                  <span>{a.desc}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
         </section>
 
-        <section class="section contact" id="contact">
-          <div class="contact__box card" data-reveal>
-            <p class="eyebrow">{t.contact.eyebrow}</p>
-            <h2 class="contact__title">{t.contact.title}</h2>
-            <p class="contact__lead">{t.contact.lead}</p>
-            <div class="contact__email">
-              <a href={`mailto:${EMAIL}`} class="contact__address">
-                {EMAIL}
-              </a>
-              <button type="button" class="btn btn--sm" onClick={copyEmail}>
-                <Copy size={16} aria-hidden="true" /> {t.contact.copy}
-              </button>
-            </div>
-            <div class="contact__links">
-              <a class="btn btn--lime" href={`mailto:${EMAIL}`}>
-                <Mail size={18} aria-hidden="true" /> {t.contact.write}
-              </a>
-              <a class="btn btn--blue" href={LINKEDIN} target="_blank" rel="noreferrer">
-                <LinkedinIcon /> LinkedIn
-              </a>
-              <a class="btn" href={GITHUB} target="_blank" rel="noreferrer">
-                <GithubIcon /> GitHub
+        <section class="section" id="console">
+          <SectionHead eyebrow={t.console.eyebrow} title={t.console.title} lead={t.console.lead} />
+          <div data-reveal>
+            <Terminal language={language} t={t} onTheme={toggleTheme} onLang={toggleLanguage} />
+          </div>
+        </section>
+
+        <section class="section" id="contact">
+          <SectionHead eyebrow={t.contact.eyebrow} title={t.contact.title} lead={t.contact.lead} />
+          <div class="panel contact" data-reveal>
+            <dl class="fields">
+              <div>
+                <dt>{t.contact.email}</dt>
+                <dd>
+                  <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+                  <button type="button" class="tool tool--text" onClick={copyEmail}>
+                    <Copy size={13} aria-hidden="true" /> {t.contact.copy}
+                  </button>
+                </dd>
+              </div>
+              <div>
+                <dt>LinkedIn</dt>
+                <dd>
+                  <a href={LINKEDIN} target="_blank" rel="noreferrer">
+                    in/diegorezm
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt>GitHub</dt>
+                <dd>
+                  <a href={GITHUB} target="_blank" rel="noreferrer">
+                    github.com/diegorezm
+                  </a>
+                </dd>
+              </div>
+            </dl>
+            <div class="contact__cta">
+              <a class="btn btn--solid" href={`mailto:${EMAIL}`}>
+                <Mail size={16} aria-hidden="true" /> {t.contact.write}
               </a>
             </div>
           </div>
         </section>
       </main>
 
-      <footer class="footer">
-        <span>© 2026 Diego Rezende</span>
+      <footer class="statusbar">
+        <span>
+          {t.status.db} <b>diegorezm.db</b>
+        </span>
         <span>{t.footer.built}</span>
-        <span class="footer__secret">{t.footer.secret}</span>
+        <span>
+          {t.footer.backup} <b>{__BUILD_DATE__}</b>
+        </span>
+        <span>
+          {t.status.integrity} <b>{t.status.ok}</b> <i class="led" aria-hidden="true" />
+        </span>
       </footer>
 
       <div class={`toast${toast ? " is-on" : ""}`} role="status">
@@ -384,7 +362,7 @@ export default function Home({ language, t, theme, toggleTheme, toggleLanguage }
 function SectionHead({ eyebrow, title, lead }: { eyebrow: string; title: string; lead: string }) {
   return (
     <div class="section__head" data-reveal>
-      <p class="eyebrow">{eyebrow}</p>
+      <p class="label">{eyebrow}</p>
       <h2>{title}</h2>
       <p class="section__lead">{lead}</p>
     </div>

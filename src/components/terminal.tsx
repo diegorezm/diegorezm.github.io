@@ -84,18 +84,18 @@ export default function Terminal({ language, t, onTheme, onLang }: Props) {
         return neofetch();
       case "ls":
       case "ls projects":
-        return t.projects.items.map((p) => ({
+        return t.works.items.map((p) => ({
           kind: "out" as const,
-          text: `${p.name.padEnd(14)}${p.stack.join(", ")}`,
+          text: `${p.id}  ${p.name.padEnd(14)}${p.stack.join(", ")}`,
         }));
       case "xp":
       case "git log":
-        return t.xp.items.map((x) => ({
+        return t.career.items.map((x) => ({
           kind: "out" as const,
-          text: `${x.hash}  ${x.role} @ ${x.org.split(" ·")[0]}`,
+          text: `${x.period.padEnd(21)}${x.role} @ ${x.org}`,
         }));
       case "stack":
-        return t.stack.groups.map((g) => ({
+        return t.inventory.groups.map((g) => ({
           kind: "out" as const,
           text: `${g.name.toLowerCase().padEnd(18)}${g.items.join(", ")}`,
         }));

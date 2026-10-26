@@ -1,4 +1,4 @@
-const COLORS = ["#c6ff3d", "#ff5fa2", "#4d6bff", "#ff7a1a", "#b69cff", "#ffe14d"];
+const COLORS = ["#6b7a3a", "#a8b46a", "#e8e1d2", "#1c1b18", "#b0562f", "#c9b98f"];
 
 export const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

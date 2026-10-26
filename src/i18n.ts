@@ -4,101 +4,135 @@ export const EMAIL = "diegommrez12@gmail.com";
 export const GITHUB = "https://github.com/diegorezm";
 export const LINKEDIN = "https://www.linkedin.com/in/diegorezm/";
 
-export const marquee = [
-  "TypeScript",
-  "Next.js",
-  "PostgreSQL",
-  "Docker",
-  "Traefik",
-  "Linux",
-  "GitHub Actions",
-  "tRPC",
-  "Laravel",
-  "Rust",
-  "Go",
-  "Redis",
-];
+export type Plate = "rings" | "grid" | "waves" | "hatch" | "orbit" | "blocks";
+
+type Project = {
+  id: string;
+  name: string;
+  repo: string;
+  plate: Plate;
+  active: boolean;
+  type: string;
+  stack: string[];
+  blurb: string;
+};
+
+const projectBase = [
+  { id: "WRK-06", name: "grimo", repo: "grimo", plate: "rings", active: true },
+  { id: "WRK-05", name: "meu-edital", repo: "meu-edital", plate: "grid", active: true },
+  { id: "WRK-04", name: "Vibe", repo: "vibe", plate: "waves", active: false },
+  { id: "WRK-03", name: "letmeask", repo: "letmeask", plate: "orbit", active: false },
+  { id: "WRK-02", name: "FastShopping", repo: "FastShopping", plate: "blocks", active: false },
+  { id: "WRK-01", name: "llm-notebook", repo: "llm-notebook", plate: "hatch", active: false },
+] as const;
+
+const projects = (items: { type: string; stack: string[]; blurb: string }[]): Project[] =>
+  projectBase.map((p, i) => ({ ...p, ...items[i] }));
 
 export const translations = {
   en: {
     seoTitle: "Diego Rezende | Software Developer & Linux Infrastructure",
     seoDescription:
       "Diego Rezende is a software developer from Brazil building web apps with TypeScript, Next.js and PostgreSQL, and shipping them on Linux servers with Docker.",
-    nav: { work: "Projects", xp: "Career", stack: "Inventory", contact: "Contact" },
+    archive: "Personal archive & portfolio",
+    nav: {
+      works: "Works",
+      career: "Career",
+      inventory: "Inventory",
+      console: "Console",
+      contact: "Contact",
+    },
     langLabel: "Mudar para português",
     langShort: "PT",
     themeLabel: "Toggle theme",
+    status: { mode: "Open to work", integrity: "Data integrity", ok: "OK", db: "Local database" },
     hero: {
-      badge: "Open to work · dev · IT support · infra",
-      hello: "hey, i'm",
-      first: "Diego",
-      last: "Rezende",
-      lead: "Software developer who also likes keeping Linux servers alive. I build web apps, put them in Docker containers, ship them to a VPS, and write docs so the next person has an easier time.",
-      ctaWork: "See my stuff",
-      ctaEmail: "Copy email",
-      copied: "Email copied. Talk soon!",
-      facts: ["Brazil", "Full-stack @ Morzen", "ADS @ Unitau ✓", "English C2"],
-      dragHint: "psst, the stickers are draggable",
+      kicker: "Software developer · Linux infrastructure",
+      lead: "I build web apps with TypeScript, Next.js and PostgreSQL, put them in Docker, ship them to a Linux VPS and write the docs so the next person has an easier time.",
+      ctaWorks: "Browse the archive",
+      ctaContact: "Get in touch",
     },
-    stickers: { hire: "hire me!" },
-    terminal: {
-      title: "diego@rezm: ~",
-      hint: "type help",
-      placeholder: "type a command…",
+    record: {
+      title: "Record inspector",
+      id: "Record ID",
+      fields: [
+        ["Type", "Developer"],
+        ["Status", "● Open to work"],
+        ["Location", "Brazil · remote"],
+        ["Current", "Full-stack @ Morzen"],
+        ["Education", "ADS · Unitau (2026)"],
+        ["Languages", "PT native · EN C2"],
+      ],
+      seeking: "Seeking",
+      seekingText: "Development, IT support or infrastructure roles.",
     },
-    projects: {
-      eyebrow: "01 / side quests",
-      title: "Things I built for fun (and to learn)",
-      lead: "Full-stack apps, AI experiments and a few systems projects. All open source.",
-      view: "View code",
-      items: [
+    stats: [
+      { label: "Roles", value: "05", note: "since 2022" },
+      { label: "Works", value: "06", note: "in this archive" },
+      { label: "Building", value: "02", note: "grimo · meu-edital" },
+      { label: "English", value: "C2", note: "EF SET 72/100" },
+    ],
+    works: {
+      eyebrow: "01 — Works",
+      title: "Selected works",
+      lead: "Products I'm building, plus the experiments I learned the most from. Everything is open source.",
+      type: "Type",
+      status: "Status",
+      active: "In progress",
+      archived: "Archived",
+      open: "Open record",
+      items: projects([
         {
-          name: "Vibe",
-          repo: "vibe",
-          tag: "AI · builder",
+          type: "Product",
+          stack: ["TypeScript", "Cloudflare", "Mobile"],
+          blurb:
+            "A social network for readers: shelves, reviews, a feed and a monthly reading recap. Web and mobile.",
+        },
+        {
+          type: "Product",
+          stack: ["TypeScript", "AI", "Planning"],
+          blurb:
+            "Study planner for public exams: import notices with AI help, plan the week, log sessions and track reviews.",
+        },
+        {
+          type: "Experiment",
           stack: ["TypeScript", "Node.js", "TanStack"],
           blurb:
-            "A website builder you talk to. Describe what you want and it writes Next.js code, then keeps editing it as you chat.",
+            "A website builder you talk to. It writes Next.js code from your instructions and keeps editing it.",
         },
         {
-          name: "letmeask",
-          repo: "letmeask",
-          tag: "AI · audio",
+          type: "Experiment",
           stack: ["TypeScript", "Fastify", "React"],
           blurb:
-            "Record or upload audio, get a transcript, then ask questions about what was said. Built during NLW Agents.",
+            "Transcribes audio and lets you ask questions about what was said. Built during NLW Agents.",
         },
         {
-          name: "FastShopping",
-          repo: "FastShopping",
-          tag: "perf · backend",
+          type: "Research",
           stack: ["Java", "Spring Boot", "Redis"],
           blurb:
-            "How fast can one node go? Stress-testing a Spring Boot + PostgreSQL API and measuring what caching really buys you.",
+            "Stress-testing a single-node Spring Boot + PostgreSQL API to measure what caching really buys.",
         },
         {
-          name: "llm-notebook",
-          repo: "llm-notebook",
-          tag: "local-first · RAG",
+          type: "Research",
           stack: ["Rust", "Ollama", "RAG"],
-          blurb:
-            "Ask questions about your documents with no internet needed. Everything runs locally with Rust and Ollama.",
+          blurb: "Ask questions about your documents with no internet. Everything runs locally.",
         },
-      ],
+      ]),
     },
-    xp: {
-      eyebrow: "02 / git log --career",
-      title: "Where I've been committing",
-      lead: "Newest first. Every entry is real and very lightly dramatized.",
-      present: "present",
+    career: {
+      eyebrow: "02 — Career",
+      title: "Career log",
+      lead: "Newest first. Select an entry to read the details.",
+      cols: ["Period", "Role", "Organization", "Status"],
+      current: "Current",
+      done: "Closed",
+      merit: "Merit",
       items: [
         {
-          hash: "f3a91c0",
-          refs: ["HEAD -> main"],
-          msg: "feat: join Morzen as full-stack dev",
+          period: "Jul 2025 — now",
           role: "Full-stack Developer",
           org: "Morzen",
-          period: "Jul 2025 — present",
+          state: "current",
           bullets: [
             "Help scope new projects, align requirements and plan the technical approach.",
             "Build solutions for different client needs and help grow the company's services.",
@@ -106,27 +140,23 @@ export const translations = {
           ],
         },
         {
-          hash: "b72e4d9",
-          refs: ["tag: junior"],
-          msg: "chore(infra): docker + traefik + ci on a linux vps",
+          period: "Jan 2026 — Mar 2026",
           role: "Junior Full-stack Developer",
           org: "Conselheiro Tutelar Virtual",
-          period: "Jan 2026 — Mar 2026",
+          state: "done",
           bullets: [
             "Built and maintained features for a Next.js + TypeScript web app.",
             "Designed and maintained the PostgreSQL database: modeling, migrations and queries.",
             "Standardized dev and prod environments with Docker.",
-            "Set up production on a Linux VPS with Traefik and automated deploys with GitHub Actions + GHCR.",
+            "Set up production on a Linux VPS with Traefik; automated deploys with GitHub Actions + GHCR.",
             "Documented configuration and technical changes.",
           ],
         },
         {
-          hash: "9c1d0aa",
-          refs: [],
-          msg: "feat: first real job, first real codebase",
+          period: "Sep 2025 — Jan 2026",
           role: "Intern",
           org: "Conselheiro Tutelar Virtual",
-          period: "Sep 2025 — Jan 2026",
+          state: "done",
           bullets: [
             "Built features with Next.js and TypeScript alongside the team.",
             "Worked on data modeling with PostgreSQL and Drizzle ORM.",
@@ -135,12 +165,10 @@ export const translations = {
           ],
         },
         {
-          hash: "4e8b2f7",
-          refs: ["branch: freelance"],
-          msg: "feat: ship client apps in php + laravel",
+          period: "Jan 2024 — Aug 2025",
           role: "Freelancer",
           org: "Self-employed",
-          period: "Jan 2024 — Aug 2025",
+          state: "done",
           bullets: [
             "Built web apps in PHP and Laravel to fit what each client needed.",
             "Modeled MySQL databases and wrote the backend and business rules.",
@@ -149,155 +177,173 @@ export const translations = {
           ],
         },
         {
-          hash: "1a0c3e5",
-          refs: ["tag: merit"],
-          msg: "fix(discipline): serve in the Brazilian Army",
-          role: "Soldier",
-          org: "Brazilian Army · Pindamonhangaba, SP",
           period: "Mar 2022 — Jan 2023",
+          role: "Soldier",
+          org: "Brazilian Army",
+          state: "merit",
           bullets: [
-            "Carried out security and access control following strict procedures.",
+            "Security and access control following strict operational procedures.",
             "Greeted and guided visitors at the unit's entrance.",
             "Received a Certificate of Merit for performance, commitment and discipline.",
           ],
         },
       ],
       edu: {
-        hash: "0000001",
-        refs: ["tag: v1.0.0"],
-        msg: "release: graduated",
+        label: "Education",
         role: "Systems Analysis & Development (Technologist)",
         org: "Universidade de Taubaté",
         period: "Feb 2023 — Feb 2026",
       },
     },
-    stack: {
-      eyebrow: "03 / inventory",
-      title: "Equipped items",
-      lead: "What I reach for when I build, store, ship and keep things running.",
+    inventory: {
+      eyebrow: "03 — Inventory",
+      title: "Tools & credentials",
+      lead: "What I reach for to build, store, ship and keep things running.",
       groups: [
         {
           name: "Build",
-          color: "lime",
           items: ["TypeScript", "React", "Next.js", "Node.js", "tRPC", "PHP / Laravel"],
         },
-        {
-          name: "Store",
-          color: "pink",
-          items: ["PostgreSQL", "MySQL", "Drizzle ORM", "Redis"],
-        },
+        { name: "Store", items: ["PostgreSQL", "MySQL", "Drizzle ORM", "Redis"] },
         {
           name: "Ship & run",
-          color: "blue",
           items: ["Linux", "Docker", "Traefik", "GitHub Actions", "VPS", "DNS"],
         },
-        {
-          name: "Side quests",
-          color: "orange",
-          items: ["Rust", "Go", "Java / Spring", "Python", "Ollama"],
-        },
+        { name: "Also", items: ["Rust", "Go", "Java / Spring", "Python", "Ollama"] },
       ],
-      achievementsTitle: "Achievements unlocked",
-      achievements: [
-        { icon: "🗣️", title: "English C2", desc: "EF SET 72/100 · full professional" },
-        { icon: "🧭", title: "ITIL Fundamentals", desc: "IT service governance & management" },
-        { icon: "🎖️", title: "Certificate of Merit", desc: "Brazilian Army, 2022" },
-        { icon: "🎓", title: "Graduated", desc: "Systems Analysis & Dev · Unitau" },
-        { icon: "🤖", title: "NLW Agents", desc: "Advanced track" },
-        { icon: "🔬", title: "CICTED 24", desc: "Intl. Congress of Science & Tech" },
+      credentials: "Credentials",
+      creds: [
+        ["English C2", "EF SET 72/100"],
+        ["ITIL Fundamentals", "IT service governance"],
+        ["Certificate of Merit", "Brazilian Army, 2022"],
+        ["NLW Agents", "Advanced track"],
+        ["CICTED 24", "Intl. science & tech congress"],
       ],
+    },
+    console: {
+      eyebrow: "04 — Console",
+      title: "Query the archive",
+      lead: "A small shell with my data in it. Try help, ls or neofetch.",
+    },
+    terminal: {
+      title: "archive@rezm — shell",
+      hint: "help",
+      placeholder: "type a command…",
     },
     contact: {
-      eyebrow: "04 / ping me",
-      title: "Let's build something",
-      lead: "Hiring for development, IT support or infrastructure? Have a project in mind? Or just want to talk Linux? My inbox is open.",
+      eyebrow: "05 — Contact",
+      title: "Open a new record",
+      lead: "Hiring for development, IT support or infrastructure, or have a project in mind? Send a message.",
+      email: "Email",
       copy: "Copy",
-      write: "Write me",
+      copied: "Email copied to clipboard.",
+      write: "Write an email",
     },
-    footer: {
-      built: "Built with Preact, a lot of coffee and zero templates.",
-      secret: "psst: ↑ ↑ ↓ ↓ ← → ← → B A",
-    },
+    footer: { built: "Built with Preact. No templates.", backup: "Last build" },
   },
   pt: {
     seoTitle: "Diego Rezende | Desenvolvedor de Software & Infraestrutura Linux",
     seoDescription:
       "Diego Rezende é desenvolvedor de software no Brasil. Cria aplicações web com TypeScript, Next.js e PostgreSQL e coloca tudo no ar em servidores Linux com Docker.",
-    nav: { work: "Projetos", xp: "Carreira", stack: "Inventário", contact: "Contato" },
+    archive: "Arquivo pessoal & portfólio",
+    nav: {
+      works: "Projetos",
+      career: "Carreira",
+      inventory: "Inventário",
+      console: "Console",
+      contact: "Contato",
+    },
     langLabel: "Switch to English",
     langShort: "EN",
     themeLabel: "Alternar tema",
+    status: { mode: "Aberto a vagas", integrity: "Integridade", ok: "OK", db: "Banco local" },
     hero: {
-      badge: "Aberto a vagas · dev · suporte de TI · infra",
-      hello: "e aí, eu sou o",
-      first: "Diego",
-      last: "Rezende",
-      lead: "Desenvolvedor de software que também gosta de manter servidores Linux de pé. Crio aplicações web, coloco tudo em containers Docker, faço deploy em VPS e documento para facilitar a vida de quem vem depois.",
-      ctaWork: "Ver meus projetos",
-      ctaEmail: "Copiar email",
-      copied: "Email copiado. Até já!",
-      facts: ["Brasil", "Full-stack @ Morzen", "ADS @ Unitau ✓", "Inglês C2"],
-      dragHint: "psiu, dá pra arrastar os adesivos",
+      kicker: "Desenvolvedor de software · Infraestrutura Linux",
+      lead: "Crio aplicações web com TypeScript, Next.js e PostgreSQL, coloco tudo em Docker, faço deploy em VPS Linux e documento para facilitar a vida de quem vem depois.",
+      ctaWorks: "Explorar o arquivo",
+      ctaContact: "Entrar em contato",
     },
-    stickers: { hire: "me contrata!" },
-    terminal: {
-      title: "diego@rezm: ~",
-      hint: "digite help",
-      placeholder: "digite um comando…",
+    record: {
+      title: "Inspetor de registro",
+      id: "ID do registro",
+      fields: [
+        ["Tipo", "Desenvolvedor"],
+        ["Status", "● Aberto a vagas"],
+        ["Local", "Brasil · remoto"],
+        ["Atual", "Full-stack @ Morzen"],
+        ["Formação", "ADS · Unitau (2026)"],
+        ["Idiomas", "PT nativo · EN C2"],
+      ],
+      seeking: "Busco",
+      seekingText: "Vagas de desenvolvimento, suporte de TI ou infraestrutura.",
     },
-    projects: {
-      eyebrow: "01 / side quests",
-      title: "Coisas que criei por diversão (e pra aprender)",
-      lead: "Aplicações full-stack, experimentos com IA e alguns projetos de sistemas. Tudo open source.",
-      view: "Ver código",
-      items: [
+    stats: [
+      { label: "Cargos", value: "05", note: "desde 2022" },
+      { label: "Projetos", value: "06", note: "neste arquivo" },
+      { label: "Em andamento", value: "02", note: "grimo · meu-edital" },
+      { label: "Inglês", value: "C2", note: "EF SET 72/100" },
+    ],
+    works: {
+      eyebrow: "01 — Projetos",
+      title: "Projetos selecionados",
+      lead: "Produtos que estou construindo e os experimentos com que mais aprendi. Tudo open source.",
+      type: "Tipo",
+      status: "Status",
+      active: "Em andamento",
+      archived: "Arquivado",
+      open: "Abrir registro",
+      items: projects([
         {
-          name: "Vibe",
-          repo: "vibe",
-          tag: "IA · builder",
+          type: "Produto",
+          stack: ["TypeScript", "Cloudflare", "Mobile"],
+          blurb:
+            "Rede social para leitores: estantes, resenhas, feed e o resumo do seu mês de leitura. Web e mobile.",
+        },
+        {
+          type: "Produto",
+          stack: ["TypeScript", "IA", "Planejamento"],
+          blurb:
+            "Organize os estudos para concursos: importe editais com apoio de IA, planeje a semana, registre sessões e revisões.",
+        },
+        {
+          type: "Experimento",
           stack: ["TypeScript", "Node.js", "TanStack"],
           blurb:
-            "Um criador de sites com quem você conversa. Descreva o que quer e ele escreve código Next.js, e continua editando conforme o papo.",
+            "Um criador de sites com quem você conversa. Gera código Next.js a partir das instruções e continua editando.",
         },
         {
-          name: "letmeask",
-          repo: "letmeask",
-          tag: "IA · áudio",
+          type: "Experimento",
           stack: ["TypeScript", "Fastify", "React"],
           blurb:
-            "Grave ou envie um áudio, receba a transcrição e faça perguntas sobre o conteúdo. Criado durante o NLW Agents.",
+            "Transcreve áudio e permite fazer perguntas sobre o conteúdo. Criado durante o NLW Agents.",
         },
         {
-          name: "FastShopping",
-          repo: "FastShopping",
-          tag: "perf · backend",
+          type: "Pesquisa",
           stack: ["Java", "Spring Boot", "Redis"],
           blurb:
-            "Até onde vai um único nó? Testes de estresse numa API Spring Boot + PostgreSQL medindo o que o cache realmente entrega.",
+            "Testes de estresse numa API Spring Boot + PostgreSQL de nó único, medindo o que o cache realmente entrega.",
         },
         {
-          name: "llm-notebook",
-          repo: "llm-notebook",
-          tag: "local-first · RAG",
+          type: "Pesquisa",
           stack: ["Rust", "Ollama", "RAG"],
-          blurb:
-            "Faça perguntas sobre seus documentos sem precisar de internet. Tudo roda localmente com Rust e Ollama.",
+          blurb: "Faça perguntas sobre seus documentos sem internet. Tudo roda localmente.",
         },
-      ],
+      ]),
     },
-    xp: {
-      eyebrow: "02 / git log --carreira",
-      title: "Onde ando commitando",
-      lead: "Do mais recente ao mais antigo. Tudo real, só um pouquinho dramatizado.",
-      present: "atual",
+    career: {
+      eyebrow: "02 — Carreira",
+      title: "Registro de carreira",
+      lead: "Do mais recente ao mais antigo. Selecione uma entrada para ver os detalhes.",
+      cols: ["Período", "Cargo", "Organização", "Status"],
+      current: "Atual",
+      done: "Encerrado",
+      merit: "Mérito",
       items: [
         {
-          hash: "f3a91c0",
-          refs: ["HEAD -> main"],
-          msg: "feat: entra na Morzen como dev full-stack",
+          period: "jul 2025 — atual",
           role: "Desenvolvedor Full-stack",
           org: "Morzen",
-          period: "jul 2025 — atual",
+          state: "current",
           bullets: [
             "Participo da definição de escopo, alinhamento de demandas e planejamento técnico de novos projetos.",
             "Colaboro em soluções para diferentes necessidades de clientes e na evolução dos serviços da empresa.",
@@ -305,27 +351,23 @@ export const translations = {
           ],
         },
         {
-          hash: "b72e4d9",
-          refs: ["tag: junior"],
-          msg: "chore(infra): docker + traefik + ci numa vps linux",
+          period: "jan 2026 — mar 2026",
           role: "Desenvolvedor Full-stack Júnior",
           org: "Conselheiro Tutelar Virtual",
-          period: "jan 2026 — mar 2026",
+          state: "done",
           bullets: [
             "Desenvolvi e mantive funcionalidades de uma aplicação Next.js + TypeScript.",
             "Estruturei e mantive o banco PostgreSQL: modelagem, migrações e consultas.",
             "Padronizei os ambientes de desenvolvimento e produção com Docker.",
-            "Configurei produção em VPS Linux com Traefik e automatizei deploys com GitHub Actions + GHCR.",
+            "Configurei produção em VPS Linux com Traefik; automatizei deploys com GitHub Actions + GHCR.",
             "Documentei configurações e mudanças técnicas.",
           ],
         },
         {
-          hash: "9c1d0aa",
-          refs: [],
-          msg: "feat: primeiro emprego, primeira codebase de verdade",
+          period: "set 2025 — jan 2026",
           role: "Estagiário",
           org: "Conselheiro Tutelar Virtual",
-          period: "set 2025 — jan 2026",
+          state: "done",
           bullets: [
             "Desenvolvi funcionalidades com Next.js e TypeScript junto com o time.",
             "Trabalhei com modelagem de dados usando PostgreSQL e Drizzle ORM.",
@@ -334,12 +376,10 @@ export const translations = {
           ],
         },
         {
-          hash: "4e8b2f7",
-          refs: ["branch: freelance"],
-          msg: "feat: entrega apps para clientes em php + laravel",
+          period: "jan 2024 — ago 2025",
           role: "Freelancer",
           org: "Autônomo",
-          period: "jan 2024 — ago 2025",
+          state: "done",
           bullets: [
             "Desenvolvi aplicações web em PHP e Laravel sob medida para cada cliente.",
             "Modelei bancos MySQL e implementei o backend e as regras de negócio.",
@@ -348,75 +388,69 @@ export const translations = {
           ],
         },
         {
-          hash: "1a0c3e5",
-          refs: ["tag: mérito"],
-          msg: "fix(disciplina): serve no Exército Brasileiro",
-          role: "Soldado",
-          org: "Exército Brasileiro · Pindamonhangaba, SP",
           period: "mar 2022 — jan 2023",
+          role: "Soldado",
+          org: "Exército Brasileiro",
+          state: "merit",
           bullets: [
-            "Realizei atividades de segurança e controle seguindo procedimentos operacionais.",
+            "Segurança e controle de acesso seguindo procedimentos operacionais.",
             "Atendi e orientei visitantes na entrada da unidade.",
             "Recebi um Certificado de Mérito por desempenho, comprometimento e disciplina.",
           ],
         },
       ],
       edu: {
-        hash: "0000001",
-        refs: ["tag: v1.0.0"],
-        msg: "release: formado",
+        label: "Formação",
         role: "Tecnólogo em Análise e Desenvolvimento de Sistemas",
         org: "Universidade de Taubaté",
         period: "fev 2023 — fev 2026",
       },
     },
-    stack: {
-      eyebrow: "03 / inventário",
-      title: "Itens equipados",
+    inventory: {
+      eyebrow: "03 — Inventário",
+      title: "Ferramentas & credenciais",
       lead: "O que eu uso para criar, guardar, entregar e manter as coisas funcionando.",
       groups: [
         {
           name: "Criar",
-          color: "lime",
           items: ["TypeScript", "React", "Next.js", "Node.js", "tRPC", "PHP / Laravel"],
         },
-        {
-          name: "Guardar",
-          color: "pink",
-          items: ["PostgreSQL", "MySQL", "Drizzle ORM", "Redis"],
-        },
+        { name: "Guardar", items: ["PostgreSQL", "MySQL", "Drizzle ORM", "Redis"] },
         {
           name: "Entregar & manter",
-          color: "blue",
           items: ["Linux", "Docker", "Traefik", "GitHub Actions", "VPS", "DNS"],
         },
-        {
-          name: "Side quests",
-          color: "orange",
-          items: ["Rust", "Go", "Java / Spring", "Python", "Ollama"],
-        },
+        { name: "Também", items: ["Rust", "Go", "Java / Spring", "Python", "Ollama"] },
       ],
-      achievementsTitle: "Conquistas desbloqueadas",
-      achievements: [
-        { icon: "🗣️", title: "Inglês C2", desc: "EF SET 72/100 · domínio pleno" },
-        { icon: "🧭", title: "Fundamentos ITIL", desc: "Governança e gestão de serviços de TI" },
-        { icon: "🎖️", title: "Certificado de Mérito", desc: "Exército Brasileiro, 2022" },
-        { icon: "🎓", title: "Formado", desc: "Análise e Desenv. de Sistemas · Unitau" },
-        { icon: "🤖", title: "NLW Agents", desc: "Trilha avançada" },
-        { icon: "🔬", title: "CICTED 24", desc: "Congresso Intl. de Ciência e Tecnologia" },
+      credentials: "Credenciais",
+      creds: [
+        ["Inglês C2", "EF SET 72/100"],
+        ["Fundamentos ITIL", "Governança de serviços de TI"],
+        ["Certificado de Mérito", "Exército Brasileiro, 2022"],
+        ["NLW Agents", "Trilha avançada"],
+        ["CICTED 24", "Congresso intl. de ciência e tecnologia"],
       ],
+    },
+    console: {
+      eyebrow: "04 — Console",
+      title: "Consulte o arquivo",
+      lead: "Um pequeno shell com meus dados. Tente help, ls ou neofetch.",
+    },
+    terminal: {
+      title: "archive@rezm — shell",
+      hint: "help",
+      placeholder: "digite um comando…",
     },
     contact: {
-      eyebrow: "04 / me chama",
-      title: "Bora construir algo",
-      lead: "Contratando para desenvolvimento, suporte de TI ou infraestrutura? Tem um projeto em mente? Ou só quer falar de Linux? Minha caixa de entrada está aberta.",
+      eyebrow: "05 — Contato",
+      title: "Abrir um novo registro",
+      lead: "Contratando para desenvolvimento, suporte de TI ou infraestrutura, ou tem um projeto em mente? Mande uma mensagem.",
+      email: "Email",
       copy: "Copiar",
-      write: "Mandar email",
+      copied: "Email copiado.",
+      write: "Escrever um email",
     },
-    footer: {
-      built: "Feito com Preact, muito café e zero templates.",
-      secret: "psiu: ↑ ↑ ↓ ↓ ← → ← → B A",
-    },
+    footer: { built: "Feito com Preact. Sem templates.", backup: "Último build" },
   },
 };
 
