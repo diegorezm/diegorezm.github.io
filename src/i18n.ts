@@ -7,15 +7,55 @@ export const QUEST_MAP = "https://diegorezm.github.io/distributed-eng-learning-p
 
 type Status = "live" | "beta" | "building" | "waitlist" | "study";
 
-const index = [
-  { repo: "grimo", name: "Grimo", stack: "TypeScript · Cloudflare", status: "building" },
-  { repo: "leme", name: "Leme", stack: "Rust · Slint", status: "live" },
-  { repo: "dresume", name: "dresume", stack: "Rust · Typst", status: "live" },
+export type Project = {
+  repo: string;
+  name: string;
+  stack: string;
+  status: Status;
+  /** File in public/projects/. Without one the page draws a monogram. */
+  logo?: string;
+  logoDark?: string;
+  /** Brand color used to tint the card behind the logo. */
+  tint?: string;
+};
+
+const featured: Project[] = [
+  {
+    repo: "grimo",
+    name: "Grimo",
+    stack: "TypeScript · Cloudflare",
+    status: "building",
+    logo: "grimo.svg",
+    logoDark: "grimo-dark.svg",
+    tint: "#8d78a4",
+  },
+  {
+    repo: "pomolotl",
+    name: "Pomolotl",
+    stack: "Rust · egui",
+    status: "live",
+    logo: "pomolotl.svg",
+    tint: "#e7708f",
+  },
+];
+
+const index: Project[] = [
+  {
+    repo: "meu-edital",
+    name: "Meu Edital",
+    stack: "TypeScript · Cloudflare",
+    status: "waitlist",
+    logo: "meu-edital.png",
+  },
+  { repo: "leme", name: "Leme", stack: "Rust · Slint", status: "live", logo: "leme.svg" },
+  { repo: "dresume", name: "dresume", stack: "Rust · Typst", status: "live", logo: "dresume.svg" },
   { repo: "dcom", name: "dcom", stack: "Rust · Convex", status: "beta" },
   { repo: "proposal-skill", name: "proposal", stack: "HTML · Claude Code", status: "live" },
   { repo: "KVCluster", name: "KVCluster", stack: "Java 25", status: "study" },
-] as const satisfies readonly { repo: string; name: string; stack: string; status: Status }[];
+];
 
+const withFeatured = (texts: { kind: string; blurb: string }[]) =>
+  featured.map((p, i) => ({ ...p, ...texts[i] }));
 const withBlurbs = (blurbs: string[]) => index.map((p, i) => ({ ...p, blurb: blurbs[i] }));
 
 const stages = [
@@ -70,27 +110,20 @@ export const translations = {
       title: "Things I've",
       titleEm: "built.",
       aside: "A selection of what I built this past year.",
-      edital: {
-        kind: "Study app · Web",
-        blurb:
-          "Builds a study cycle from the weight of each subject in a public exam notice, always shows the next block, and turns studying into a game.",
-        stack: "TypeScript · Cloudflare",
-        mock: {
-          next: "Next block",
-          subject: "Constitutional Law",
-          sub: "Fundamental rights · review in 7 days",
-          lap: "Lap 3 · 62%",
+      featured: withFeatured([
+        {
+          kind: "Social network · Web + mobile",
+          blurb:
+            "A social network for readers: shelves, reviews, a feed and a monthly reading recap. Web and mobile, running on Cloudflare.",
         },
-      },
-      pomolotl: {
-        kind: "Pomodoro timer · Desktop",
-        blurb:
-          "A cozy Pomodoro timer with a companion that focuses and rests with you. Lives in the system tray and has a floating timer.",
-        stack: "Rust · egui",
-        mock: { phase: "Focus · 2 of 4" },
-      },
+        {
+          kind: "Pomodoro timer · Desktop",
+          blurb:
+            "A cozy Pomodoro timer with a companion that focuses and rests with you. Lives in the system tray and has a floating timer.",
+        },
+      ]),
       items: withBlurbs([
-        "A social network for readers: shelves, reviews and a monthly reading recap.",
+        "A study app for public exams that builds a study cycle from the exam notice.",
         "A fast, minimal, local-first PDF reader.",
         "One Typst template, many resumes. Desktop app and CLI built for AI agents.",
         "Lightweight, self-hostable community chat.",
@@ -179,27 +212,20 @@ export const translations = {
       title: "Coisas que eu",
       titleEm: "fiz.",
       aside: "Uma seleção do que construí no último ano.",
-      edital: {
-        kind: "App de estudos · Web",
-        blurb:
-          "Monta um ciclo de estudos pelos pesos do edital, mostra sempre o próximo bloco e transforma o estudo pra concurso em jogo.",
-        stack: "TypeScript · Cloudflare",
-        mock: {
-          next: "Próximo bloco",
-          subject: "Direito Constitucional",
-          sub: "Direitos fundamentais · revisão em 7 dias",
-          lap: "Volta 3 · 62%",
+      featured: withFeatured([
+        {
+          kind: "Rede social · Web + mobile",
+          blurb:
+            "Rede social pra leitores: estantes, resenhas, feed e o resumo do seu mês de leitura. Web e mobile, rodando na Cloudflare.",
         },
-      },
-      pomolotl: {
-        kind: "Timer Pomodoro · Desktop",
-        blurb:
-          "Um Pomodoro aconchegante com um companheiro que foca e descansa com você. Mora na bandeja do sistema e tem timer flutuante.",
-        stack: "Rust · egui",
-        mock: { phase: "Foco · 2 de 4" },
-      },
+        {
+          kind: "Timer Pomodoro · Desktop",
+          blurb:
+            "Um Pomodoro aconchegante com um companheiro que foca e descansa com você. Mora na bandeja do sistema e tem timer flutuante.",
+        },
+      ]),
       items: withBlurbs([
-        "Rede social pra leitores: estantes, resenhas e o resumo do seu mês.",
+        "App de estudos pra concurso que monta um ciclo pelos pesos do edital.",
         "Leitor de PDF rápido, minimalista e local-first.",
         "Um template Typst, vários currículos. Desktop e CLI feitos pra agentes de IA.",
         "Chat de comunidade leve e self-hostable.",

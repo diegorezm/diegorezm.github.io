@@ -1,5 +1,13 @@
 import { useEffect, useState } from "preact/hooks";
-import { EMAIL, GITHUB, type Language, LINKEDIN, QUEST_MAP, type Translation } from "../i18n";
+import {
+  EMAIL,
+  GITHUB,
+  type Language,
+  LINKEDIN,
+  type Project,
+  QUEST_MAP,
+  type Translation,
+} from "../i18n";
 import { HERO_SCENE, SYMBOLS, VALLEY_SCENE } from "./scenery";
 
 type Props = {
@@ -20,6 +28,42 @@ function Head({ class: className }: { class?: string }) {
     <svg class={className} aria-hidden="true">
       <use href="#axo-head" />
     </svg>
+  );
+}
+
+const asset = (file: string) => `${import.meta.env.BASE_URL}projects/${file}`;
+
+/** A project's own logo, or a monogram tile when the repo has none. */
+function Logo({ project, size }: { project: Project; size: number }) {
+  if (!project.logo) {
+    const initials = project.name.replace(/[^A-Za-z]/g, "").slice(0, 2);
+    return (
+      <span class="logo-tile logo-tile--mono" style={`--size:${size}px`} aria-hidden="true">
+        {initials[0].toUpperCase() + initials.slice(1).toLowerCase()}
+      </span>
+    );
+  }
+  return (
+    <span class="logo-tile" style={`--size:${size}px`} aria-hidden="true">
+      <img
+        class={project.logoDark ? "only-light" : undefined}
+        src={asset(project.logo)}
+        alt=""
+        width={size}
+        height={size}
+        loading="lazy"
+      />
+      {project.logoDark && (
+        <img
+          class="only-dark"
+          src={asset(project.logoDark)}
+          alt=""
+          width={size}
+          height={size}
+          loading="lazy"
+        />
+      )}
+    </span>
   );
 }
 
@@ -128,27 +172,30 @@ export default function Home({ t, theme, toggleTheme, toggleLanguage }: Props) {
             aria-hidden="true"
             dangerouslySetInnerHTML={raw(HERO_SCENE)}
           />
+          <nav class="strip" aria-label={t.home}>
+            {t.strip.map((cell, i) => (
+              <a
+                key={cell.title}
+                href={stripTargets[i]}
+                class={icons[i] ? undefined : "status-cell"}
+              >
+                {icons[i]}
+                <div>
+                  <span class="label">
+                    {!icons[i] && <i class="dot" aria-hidden="true" />}
+                    {cell.title}
+                  </span>
+                  <p>
+                    {cell.text[0]}
+                    <br />
+                    {cell.text[1]}
+                  </p>
+                  <span class="go">{cell.go}</span>
+                </div>
+              </a>
+            ))}
+          </nav>
         </section>
-
-        <nav class="strip" aria-label={t.home}>
-          {t.strip.map((cell, i) => (
-            <a key={cell.title} href={stripTargets[i]} class={icons[i] ? undefined : "status-cell"}>
-              {icons[i]}
-              <div>
-                <span class="label">
-                  {!icons[i] && <i class="dot" aria-hidden="true" />}
-                  {cell.title}
-                </span>
-                <p>
-                  {cell.text[0]}
-                  <br />
-                  {cell.text[1]}
-                </p>
-                <span class="go">{cell.go}</span>
-              </div>
-            </a>
-          ))}
-        </nav>
 
         <section class="block wrap" id="work">
           <div class="head">
@@ -162,103 +209,29 @@ export default function Home({ t, theme, toggleTheme, toggleLanguage }: Props) {
           </div>
 
           <div class="feature">
-            <a class="feat" href={`${GITHUB}/meu-edital`} {...ext}>
-              <div class="feat__art" style="background:#efe2c9">
-                <svg
-                  class="bg"
-                  viewBox="0 0 400 225"
-                  preserveAspectRatio="xMidYMax slice"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M0 170C90 140 180 160 260 150C320 142 370 160 400 152V225H0Z"
-                    fill="#dcc9a3"
-                  />
-                  <path d="M0 195C120 180 260 200 400 185V225H0Z" fill="#cdb68a" />
-                </svg>
-                <div class="mock mock--edital" aria-hidden="true">
-                  <div class="mock__row">
-                    <span class="label">{work.edital.mock.next}</span>
-                    <span class="mock__chip">50 min</span>
-                  </div>
-                  <strong>{work.edital.mock.subject}</strong>
-                  <span class="mock__sub">{work.edital.mock.sub}</span>
-                  <div class="mock__bar">
-                    <i />
-                  </div>
-                  <div class="mock__row mock__foot">
-                    <span>{work.edital.mock.lap}</span>
-                    <span>+120 XP</span>
+            {work.featured.map((p) => (
+              <a key={p.repo} class="feat" href={`${GITHUB}/${p.repo}`} {...ext}>
+                <div class="feat__art" style={`--brand:${p.tint}`}>
+                  <Logo project={p} size={128} />
+                </div>
+                <div class="feat__body">
+                  <span class="label">{p.kind}</span>
+                  <h3>{p.name}</h3>
+                  <p>{p.blurb}</p>
+                  <div class="meta">
+                    <span class={`status status--${p.status}`}>{t.status[p.status]}</span>
+                    <span>{p.stack}</span>
                   </div>
                 </div>
-              </div>
-              <div class="feat__body">
-                <span class="label">{work.edital.kind}</span>
-                <h3>Meu Edital</h3>
-                <p>{work.edital.blurb}</p>
-                <div class="meta">
-                  <span class="status" style="--c:#d9a441">
-                    {t.status.waitlist}
-                  </span>
-                  <span>{work.edital.stack}</span>
-                </div>
-              </div>
-            </a>
-
-            <a class="feat" href={`${GITHUB}/pomolotl`} {...ext}>
-              <div class="feat__art" style="background:#cfe6ea">
-                <svg
-                  class="bg"
-                  viewBox="0 0 400 225"
-                  preserveAspectRatio="xMidYMax slice"
-                  aria-hidden="true"
-                >
-                  <circle cx="330" cy="50" r="26" fill="#f7f0d6" />
-                  <path
-                    d="M0 175C100 150 200 170 300 158C350 152 380 162 400 158V225H0Z"
-                    fill="#a9d1cf"
-                  />
-                  <path d="M0 198C140 188 260 205 400 192V225H0Z" fill="#8cbfba" />
-                </svg>
-                <div class="mock mock--pomo" aria-hidden="true">
-                  <svg viewBox="0 0 120 120" aria-hidden="true">
-                    <circle cx="60" cy="60" r="50" fill="none" stroke="#d7e6e6" stroke-width="8" />
-                    <circle
-                      cx="60"
-                      cy="60"
-                      r="50"
-                      fill="none"
-                      stroke="#2f6f78"
-                      stroke-width="8"
-                      stroke-linecap="round"
-                      stroke-dasharray="314"
-                      stroke-dashoffset="96"
-                      transform="rotate(-90 60 60)"
-                    />
-                  </svg>
-                  <div class="mock__time">
-                    <strong>17:24</strong>
-                    <span class="label">{work.pomolotl.mock.phase}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="feat__body">
-                <span class="label">{work.pomolotl.kind}</span>
-                <h3>Pomolotl</h3>
-                <p>{work.pomolotl.blurb}</p>
-                <div class="meta">
-                  <span class="status">{t.status.live}</span>
-                  <span>{work.pomolotl.stack}</span>
-                </div>
-              </div>
-            </a>
+              </a>
+            ))}
           </div>
 
           <ul class="index">
-            {work.items.map((p, i) => (
+            {work.items.map((p) => (
               <li key={p.repo}>
                 <a href={`${GITHUB}/${p.repo}`} {...ext}>
-                  <span class="n">{String(i + 3).padStart(2, "0")}</span>
+                  <Logo project={p} size={36} />
                   <span class="t">{p.name}</span>
                   <span class="d">{p.blurb}</span>
                   <span class="s">
@@ -393,7 +366,7 @@ export default function Home({ t, theme, toggleTheme, toggleLanguage }: Props) {
             <div>
               <h4>{footer.projects}</h4>
               <ul>
-                {["meu-edital", "pomolotl", "grimo", "leme"].map((repo) => (
+                {["grimo", "pomolotl", "meu-edital", "leme"].map((repo) => (
                   <li key={repo}>
                     <a href={`${GITHUB}/${repo}`} {...ext}>
                       {repo === "meu-edital" ? "Meu Edital" : repo[0].toUpperCase() + repo.slice(1)}

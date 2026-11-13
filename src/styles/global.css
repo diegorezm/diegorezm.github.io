@@ -317,10 +317,21 @@ a {
 
 /* ===== hero ===== */
 .hero {
+  --ground: 96px;
   position: relative;
-  min-height: max(780px, 100svh);
+  min-height: max(760px, 100svh);
   overflow: hidden;
   background: linear-gradient(var(--sky-top), var(--sky-bottom) 70%);
+}
+/* chão liso embaixo da cena, onde a faixa de atalhos pousa */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--ground) + 1px);
+  background: var(--hill-near);
 }
 .hero__text {
   position: relative;
@@ -381,26 +392,26 @@ h1 em {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: var(--ground);
   width: 100%;
-  height: 54%;
+  height: 52%;
   display: block;
-}
-@media (max-width: 760px) {
-  .scene {
-    height: 48%;
-  }
 }
 
 /* faixa de atalhos */
 .strip {
-  position: relative;
+  position: absolute;
   z-index: 3;
-  margin: -64px auto 0;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
   width: min(1200px, 100% - 32px);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  background: var(--paper-raised);
+  background: color-mix(in srgb, var(--paper-raised) 86%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid color-mix(in srgb, var(--paper-raised) 60%, transparent);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-float);
 }
@@ -450,6 +461,14 @@ h1 em {
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--available) 25%, transparent);
 }
 @media (max-width: 860px) {
+  .hero {
+    --ground: 250px;
+    min-height: 0;
+    padding-bottom: calc(var(--ground) + 300px);
+  }
+  .scene {
+    height: 340px;
+  }
   .strip {
     grid-template-columns: 1fr 1fr;
   }
@@ -461,6 +480,9 @@ h1 em {
   }
 }
 @media (max-width: 480px) {
+  .hero {
+    --ground: 380px;
+  }
   .strip {
     grid-template-columns: 1fr;
   }
@@ -540,16 +562,21 @@ h2 em {
 }
 .feat__art {
   position: relative;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 2 / 1;
   display: grid;
   place-items: center;
   overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--brand) 22%, transparent) 0 26%, transparent 26.5%),
+    radial-gradient(circle at 50% 50%, transparent 0 38%, color-mix(in srgb, var(--brand) 10%, transparent) 38.3% 38.8%, transparent 39%),
+    color-mix(in srgb, var(--brand) 14%, var(--paper-raised));
 }
-.feat__art svg.bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+.feat__art .logo-tile {
+  filter: drop-shadow(0 10px 18px color-mix(in srgb, var(--brand) 35%, transparent));
+  transition: transform 0.25s;
+}
+.feat:hover .feat__art .logo-tile {
+  transform: scale(1.04) rotate(-2deg);
 }
 .feat__body {
   padding: 22px 24px 26px;
@@ -581,89 +608,41 @@ h2 em {
   margin-right: 6px;
   font-size: 9px;
   vertical-align: 2px;
-  color: var(--c, var(--available));
+  color: var(--available);
+}
+.status--building::before,
+.status--waitlist::before {
+  color: #d9a441;
 }
 
-/* mocks: claros nos dois temas, como uma captura de tela */
-.mock {
-  position: relative;
-  background: #fbf9f2;
-  color: #1f3329;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-mock);
-}
-.mock--edital {
-  width: min(300px, 76%);
-  padding: 16px 18px;
-  display: grid;
-  gap: 6px;
-}
-.mock__row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-}
-.mock__chip {
-  font: 500 11px var(--font-mono);
-  background: #efe2c9;
-  border-radius: var(--radius-pill);
-  padding: 2px 8px;
-}
-.mock strong {
-  font-family: var(--font-serif);
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1.1;
-}
-.mock__sub {
-  font-size: 12px;
-  color: #56685c;
-}
-.mock__bar {
-  height: 6px;
-  background: #ece4d2;
-  border-radius: 99px;
-  overflow: hidden;
-  margin-top: 6px;
-}
-.mock__bar i {
-  display: block;
-  height: 100%;
-  width: 62%;
-  background: #c69a4a;
-  border-radius: 99px;
-}
-.mock__foot {
-  font: 400 11px var(--font-mono);
-  color: #56685c;
-}
-.mock--pomo {
-  width: 184px;
-  aspect-ratio: 1;
-  border-radius: 50%;
+/* logos de projeto */
+.logo-tile {
+  width: var(--size);
+  height: var(--size);
+  flex: none;
   display: grid;
   place-items: center;
 }
-.mock--pomo svg {
-  position: absolute;
-  inset: 14px;
-  width: calc(100% - 28px);
-  height: calc(100% - 28px);
+.logo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
-.mock__time {
-  display: grid;
-  justify-items: center;
-  gap: 2px;
+.logo-tile--mono {
+  border-radius: 28%;
+  background: var(--sage);
+  border: 1px solid var(--rule);
+  font: 500 calc(var(--size) * 0.42) / 1 var(--font-serif);
+  color: var(--ink);
 }
-.mock__time strong {
-  font: 500 30px var(--font-mono);
-  letter-spacing: -0.02em;
+.only-dark {
+  display: none;
 }
-.mock__time .label {
-  font-size: 9px;
-  letter-spacing: 0.14em;
-  color: #56685c;
+:root[data-theme="dark"] .only-light {
+  display: none;
+}
+:root[data-theme="dark"] .only-dark {
+  display: block;
 }
 
 /* índice de projetos */
@@ -675,9 +654,9 @@ h2 em {
 }
 .index a {
   display: grid;
-  grid-template-columns: 48px 200px 1fr 220px 24px;
+  grid-template-columns: 36px 180px 1fr 220px 24px;
   gap: 20px;
-  align-items: baseline;
+  align-items: center;
   padding: 20px 4px;
   border-bottom: 1px solid var(--rule);
   text-decoration: none;
@@ -689,7 +668,6 @@ h2 em {
   background: var(--sage);
   padding-inline: 14px;
 }
-.index .n,
 .index .s {
   font: 400 12px var(--font-mono);
   color: var(--ink-muted);
@@ -708,6 +686,10 @@ h2 em {
 @media (max-width: 860px) {
   .index a {
     grid-template-columns: 36px 1fr 24px;
+    align-items: start;
+  }
+  .index .logo-tile {
+    grid-row: span 3;
   }
   .index .d,
   .index .s {
@@ -1082,5 +1064,24 @@ h2 em {
   }
   html {
     scroll-behavior: auto;
+  }
+}
+
+/* no celular a barra do rodapé sai de cima da paisagem */
+@media (max-width: 640px) {
+  .end__land {
+    height: auto;
+    padding-top: 300px;
+  }
+  .valley {
+    bottom: auto;
+    height: 312px;
+  }
+  .bar {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin: 0 12px 12px;
   }
 }
