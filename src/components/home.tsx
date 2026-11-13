@@ -151,8 +151,8 @@ export default function Home({ t, theme, toggleTheme, toggleLanguage }: Props) {
           <div class="hero__text">
             <span class="label">{t.hero.eyebrow}</span>
             <h1>
-              {t.hero.title}
-              <br />
+              <span class="sr-only">Diego Rezende: </span>
+              {t.hero.title} <br />
               <em>{t.hero.titleEm}</em>
             </h1>
             <p class="lead">{t.hero.lead}</p>

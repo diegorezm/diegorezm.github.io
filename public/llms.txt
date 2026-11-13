@@ -1,0 +1,55 @@
+# Diego Rezende
+
+> Full-stack developer from Brazil. Builds web and desktop apps with TypeScript and Rust, and runs the Linux servers that keep them online. Currently a full-stack developer at Morzen and open to new roles in software development, IT support or infrastructure.
+
+This file summarizes https://diegorezm.github.io/ for language models. The same content is on the page in English (/) and Brazilian Portuguese (/pt-br/).
+
+## Key facts
+
+- Name: Diego Rezende (GitHub and LinkedIn handle: diegorezm)
+- Role: Full-stack developer, Linux and infrastructure
+- Location: Brazil
+- Current position: Full-stack Developer at Morzen (2025 to present)
+- Availability: open to new roles in development, IT support or infrastructure
+- Languages: Portuguese (native), English (C2)
+- Education: Systems Analysis and Development, Universidade de Taubaté (2026)
+- Certification: ITIL Fundamentals
+- Email: diegommrez12@gmail.com
+- GitHub: https://github.com/diegorezm
+- LinkedIn: https://www.linkedin.com/in/diegorezm/
+
+## Skills
+
+- Languages: TypeScript, JavaScript, Rust, Java, Go, PHP, SQL
+- Web: React, Next.js, Preact, Node.js, tRPC, Fastify, Laravel
+- Desktop: Rust with egui, Slint and Tauri
+- Data: PostgreSQL, MySQL, Redis, Convex
+- Infrastructure: Linux servers (VPS), Docker, Traefik, Cloudflare Workers, GitHub Actions
+- Currently studying: distributed systems (replication, Raft consensus, sharding, messaging, observability)
+
+## Experience
+
+- 2025 to present: Full-stack Developer, Morzen
+- 2026: Junior Full-stack Developer, Conselheiro Tutelar Virtual
+- 2025 to 2026: Intern, Conselheiro Tutelar Virtual
+- 2024 to 2025: Freelancer, PHP, Laravel and VPS administration
+- 2022 to 2023: Soldier, Brazilian Army
+
+## Projects
+
+- [Grimo](https://github.com/diegorezm/grimo): A social network for readers with shelves, reviews, a feed and a monthly reading recap. Web and mobile, running on Cloudflare. TypeScript. In development.
+- [Pomolotl](https://github.com/diegorezm/pomolotl): A cozy Pomodoro timer for Windows, Linux and macOS with an axolotl companion. Lives in the system tray and has a floating timer. Rust and egui. Released. Website: https://diegorezm.github.io/pomolotl/
+- [Meu Edital](https://github.com/diegorezm/meu-edital): A free study app for Brazilian public exams that builds a study cycle from the weight of each subject in the exam notice and turns studying into a game. TypeScript on Cloudflare. Waitlist open.
+- [Leme](https://github.com/diegorezm/leme): A fast, minimal, local-first PDF reader for Windows. Rust and Slint. Released.
+- [dresume](https://github.com/diegorezm/dresume): Resume workspaces powered by Typst: one template, many resumes. Desktop app and CLI built for AI agents. Rust. Released.
+- [dcom](https://github.com/diegorezm/dcom): Lightweight, self-hostable community chat with a native Rust desktop client and a Convex backend. Beta.
+- [proposal-skill](https://github.com/diegorezm/proposal-skill): A Claude Code skill that turns an AI's plan into a one-page visual proposal a person can review in a minute.
+- [KVCluster](https://github.com/diegorezm/KVCluster): A distributed key-value store built from scratch in Java, inspired by Redis. Study project.
+
+## Learning path
+
+- [Distributed Engineering Learning Path](https://diegorezm.github.io/distributed-eng-learning-path/): A 22-week public roadmap from failure models to a complete distributed product: basic replication, Raft, a fault-tolerant key-value store, sharding, messaging and observability. Not started yet.
+
+## Contact
+
+The best way to reach Diego about a role is email: diegommrez12@gmail.com.
