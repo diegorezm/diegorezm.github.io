@@ -188,16 +188,26 @@ a {
 }
 
 /* ===== mascote e cena ===== */
-.gills {
-  transform-origin: 0 0;
-  animation: breathe 3s ease-in-out infinite;
+.axo-gl,
+.axo-gr {
+  transform-box: fill-box;
+  animation: sway 3s ease-in-out infinite;
 }
-.eyes {
-  transform-origin: 0 4px;
+.axo-gl {
+  transform-origin: 100% 50%;
+}
+.axo-gr {
+  transform-origin: 0% 50%;
+  animation-direction: reverse;
+}
+.axo-eye {
+  transform-box: fill-box;
+  transform-origin: center;
   animation: blink 6s infinite;
 }
-.wave {
-  transform-origin: 33px 46px;
+.axo-arm {
+  transform-box: fill-box;
+  transform-origin: 12% 88%;
   animation: wave 2.6s ease-in-out infinite;
 }
 .scene .axo-wrap {
@@ -212,9 +222,9 @@ a {
   transform-origin: center;
 }
 
-@keyframes breathe {
+@keyframes sway {
   50% {
-    transform: scale(1.04);
+    transform: rotate(-5deg);
   }
 }
 @keyframes blink {
