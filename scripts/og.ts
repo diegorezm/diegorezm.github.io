@@ -1,5 +1,5 @@
-// Generates the Open Graph images and the PNG favicons from the site's own
-// scenery, with a headless Chrome (or Edge) screenshot.
+// Generates the Open Graph images and the icons from the page's own pen drawing,
+// with a headless Chrome (or Edge) screenshot.
 //
 //   pnpm og                      # uses Chrome/Edge from the default install paths
 //   CHROME_PATH=/path/to/chrome pnpm og
@@ -8,7 +8,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "no
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { HERO_SCENE, SYMBOLS } from "../src/components/scenery.ts";
+import { buildScenes, iconSvg } from "../src/drawing/scenes.ts";
 
 const root = resolve(import.meta.dirname, "..");
 const out = (file: string) => join(root, "public", file);
@@ -23,76 +23,71 @@ const browser = [
 ].find((p) => p && existsSync(p));
 if (!browser) throw new Error("No Chrome or Edge found. Set CHROME_PATH.");
 
-// Light-theme tokens straight from global.css, so the image follows the design system.
+const fontUrl = (pkg: string, file: string) =>
+  pathToFileURL(join(root, "node_modules", pkg, "files", file)).href;
+const fonts = `
+@font-face{font-family:"Fraunces";font-weight:100 900;font-style:normal;src:url("${fontUrl("@fontsource-variable/fraunces", "fraunces-latin-full-normal.woff2")}") format("woff2")}
+@font-face{font-family:"Fraunces";font-weight:100 900;font-style:italic;src:url("${fontUrl("@fontsource-variable/fraunces", "fraunces-latin-full-italic.woff2")}") format("woff2")}
+@font-face{font-family:"Caveat";font-weight:500;src:url("${fontUrl("@fontsource/caveat", "caveat-latin-500-normal.woff2")}") format("woff2")}`;
+
+// the hero's paper grain, same tile as the page
 const css = readFileSync(join(root, "src/styles/global.css"), "utf8");
-const tokens = /:root\s*\{([^}]*)\}/.exec(css)?.[1] ?? "";
+const grain = /\.grain\s*\{([^}]*)\}/.exec(css)?.[1] ?? "";
 
-const font = (pkg: string, file: string, family: string, weight: number, style = "normal") =>
-  `@font-face{font-family:"${family}";font-weight:${weight};font-style:${style};src:url("${
-    pathToFileURL(join(root, "node_modules/@fontsource", pkg, "files", file)).href
-  }") format("woff2")}`;
+const scenes = buildScenes();
 
-const fonts = [
-  font(
-    "cormorant-garamond",
-    "cormorant-garamond-latin-500-normal.woff2",
-    "Cormorant Garamond",
-    500,
-  ),
-  font(
-    "cormorant-garamond",
-    "cormorant-garamond-latin-400-italic.woff2",
-    "Cormorant Garamond",
-    400,
-    "italic",
-  ),
-  font("dm-mono", "dm-mono-latin-500-normal.woff2", "DM Mono", 500),
-].join("");
+const copy = {
+  en: {
+    role: "Full-stack · Linux · Infra",
+    title: "Useful software,",
+    em: "built with care.",
+    note: "the only light still on",
+  },
+  pt: {
+    role: "Full-stack · Linux · Infra",
+    title: "Software útil,",
+    em: "feito com cuidado.",
+    note: "a única luz acesa",
+  },
+};
 
 const page = (body: string, extra = "") => `<!doctype html><html><head><meta charset="utf-8"><style>
 ${fonts}
-:root{${tokens}}
-*{box-sizing:border-box}html,body{margin:0;overflow:hidden}
+*{box-sizing:border-box;margin:0}html,body{overflow:hidden}
 ${extra}
-</style></head><body>
-<svg width="0" height="0" style="position:absolute"><defs>${SYMBOLS}</defs></svg>
-${body}</body></html>`;
-
-const copy = {
-  en: { tagline: "Useful software, built with care.", role: "Full-stack · Linux · Infra" },
-  pt: { tagline: "Software útil, feito com cuidado.", role: "Full-stack · Linux · Infra" },
-};
+</style></head><body>${body}</body></html>`;
 
 const og = (lang: keyof typeof copy) =>
   page(
     `<main>
-  <svg class="scene" viewBox="0 0 1440 560" preserveAspectRatio="xMaxYMax slice">${HERO_SCENE}</svg>
+  <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+    <defs>${scenes.defs}</defs>
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">${scenes.hero}</g>
+    <text x="1172" y="318" fill="#f0aa3c" font-family="Caveat" font-size="28" transform="rotate(-4 1172 318)">${copy[lang].note}</text>
+  </svg>
+  <div class="grain"></div>
   <div class="text">
+    <span class="sig">Diego Rezende</span>
     <span class="label">${copy[lang].role}</span>
-    <h1>Diego Rezende</h1>
-    <p>${copy[lang].tagline}</p>
+    <h1>${copy[lang].title}<br><em>${copy[lang].em}</em></h1>
   </div>
-  <span class="url label">diegorezm.github.io</span>
+  <span class="url">diegorezm.github.io</span>
 </main>`,
-    `main{position:relative;width:1200px;height:630px;overflow:hidden;
-  background:linear-gradient(var(--sky-top),var(--sky-bottom) 72%)}
-.scene{position:absolute;left:0;right:0;bottom:0;width:1200px;height:360px}
+    `main{position:relative;width:1200px;height:630px;overflow:hidden;isolation:isolate;
+  background:radial-gradient(120% 90% at 62% 38%,#25494a,#1c3a3b 70%);color:#efe6cf;font-family:"Fraunces",serif}
+.scene{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
+.grain{${grain}}
 .text{position:absolute;left:72px;top:64px}
-.label{font:500 15px/1.4 "DM Mono",monospace;text-transform:uppercase;letter-spacing:.2em;color:var(--ink)}
-h1{margin:14px 0 6px;font:500 104px/.95 "Cormorant Garamond",serif;letter-spacing:-.02em;color:var(--ink)}
-p{margin:0;font:italic 400 46px/1.1 "Cormorant Garamond",serif;color:var(--ink-muted)}
-.url{position:absolute;left:72px;bottom:44px;color:var(--paper);background:var(--ink);
-  padding:10px 18px;border-radius:999px;font-size:14px}`,
+.sig{display:block;font:500 46px/1 "Caveat",cursive;margin-bottom:34px}
+.label{font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:#b9c2ae}
+h1{margin-top:18px;font-weight:320;font-size:80px;line-height:1.04;letter-spacing:-.015em}
+h1 em{color:#f0aa3c;font-weight:300}
+.url{position:absolute;left:72px;bottom:56px;padding:9px 20px;border:1.5px solid #f0aa3c;color:#f0aa3c;font-size:20px;
+  border-radius:255px 18px 225px 18px/18px 225px 18px 255px}`,
   );
 
-const icon = (size: number) =>
-  page(
-    `<svg style="display:block;width:${size}px;height:${size}px" viewBox="-100 -100 200 200">
-  <rect x="-100" y="-100" width="200" height="200" rx="${size > 64 ? 44 : 0}" fill="${size > 64 ? "#dfe8d6" : "none"}"/>
-  <use href="#axo-head" x="${size > 64 ? -84 : -100}" y="${size > 64 ? -64 : -78}" width="${size > 64 ? 168 : 200}" height="${size > 64 ? 128 : 156}"/>
-</svg>`,
-    "body{background:transparent}",
-  );
+const icon = (size: number, rounded: boolean) =>
+  page(iconSvg(size, rounded), "body{background:transparent}svg{display:block}");
 
 const dir = mkdtempSync(join(tmpdir(), "og-"));
 function shoot(html: string, file: string, w: number, h: number) {
@@ -115,10 +110,13 @@ function shoot(html: string, file: string, w: number, h: number) {
 }
 
 try {
+  writeFileSync(out("favicon.svg"), iconSvg(64, true));
+  console.log("wrote public/favicon.svg");
   shoot(og("en"), "assets/og.png", 1200, 630);
   shoot(og("pt"), "assets/og-pt.png", 1200, 630);
-  shoot(icon(32), "favicon-32.png", 32, 32);
-  shoot(icon(180), "apple-touch-icon.png", 180, 180);
+  shoot(icon(32, true), "favicon-32.png", 32, 32);
+  shoot(icon(180, false), "apple-touch-icon.png", 180, 180);
+  shoot(icon(512, true), "icon-512.png", 512, 512);
 } finally {
   rmSync(dir, { recursive: true, force: true });
 }

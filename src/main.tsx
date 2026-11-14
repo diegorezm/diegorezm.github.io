@@ -2,6 +2,9 @@ import { hydrate, prerender as ssr } from "preact-iso";
 import { App } from "./app";
 import { translations } from "./i18n";
 import { seoHead } from "./seo";
+import "@fontsource-variable/fraunces/full.css";
+import "@fontsource-variable/fraunces/full-italic.css";
+import "@fontsource/caveat/500.css";
 import "./styles/global.css";
 
 if (typeof window !== "undefined") {

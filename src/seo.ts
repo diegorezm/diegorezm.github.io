@@ -1,6 +1,8 @@
-import { EMAIL, GITHUB, type Language, LINKEDIN, QUEST_MAP, translations } from "./i18n";
+import { projects } from "./content/projects";
+import { EMAIL, GITHUB, type Language, LINKEDIN, QUEST_MAP, SITE } from "./content/site";
+import { translations } from "./i18n";
 
-export const SITE = "https://diegorezm.github.io";
+export { SITE };
 export const OG_IMAGE = { width: 1200, height: 630 };
 
 const ogImage = (lang: Language) => `${SITE}/assets/og${lang === "pt" ? "-pt" : ""}.png`;
@@ -31,13 +33,13 @@ const meta = {
     locale: "en_US",
     jobTitle: "Full-stack Developer",
     ogAlt:
-      "Diego Rezende, full-stack developer. An axolotl in a hoodie waving beside a pond in a calm green landscape.",
+      "Diego Rezende, full-stack developer. A pen drawing on blue paper of a night harbour, with an axolotl sitting on the quay under the only lit street lamp.",
   },
   pt: {
     locale: "pt_BR",
     jobTitle: "Desenvolvedor Full-stack",
     ogAlt:
-      "Diego Rezende, desenvolvedor full-stack. Um axolote de moletom acenando ao lado de um lago numa paisagem verde e calma.",
+      "Diego Rezende, desenvolvedor full-stack. Desenho a caneta sobre papel azul de um cais à noite, com um axolote sentado sob o único lampião aceso.",
   },
 };
 
@@ -46,7 +48,6 @@ function jsonLd(lang: Language) {
   const t = translations[lang];
   const url = pageUrl(lang);
   const person = `${SITE}/#person`;
-  const projects = [...t.work.featured, ...t.work.items];
 
   return {
     "@context": "https://schema.org",
@@ -69,7 +70,7 @@ function jsonLd(lang: Language) {
         isPartOf: { "@id": `${SITE}/#website` },
         mainEntity: { "@id": person },
         primaryImageOfPage: ogImage(lang),
-        dateModified: "2026-11-13",
+        dateModified: "2026-11-14",
       },
       {
         "@type": "Person",
@@ -114,7 +115,7 @@ function jsonLd(lang: Language) {
           item: {
             "@type": "SoftwareSourceCode",
             name: p.name,
-            description: p.blurb,
+            description: p.blurb[lang],
             codeRepository: `${GITHUB}/${p.repo}`,
             programmingLanguage: p.stack.split(" · ")[0],
             author: { "@id": person },
