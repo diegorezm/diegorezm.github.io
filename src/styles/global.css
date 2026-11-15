@@ -262,3 +262,37 @@ html { scrollbar-color: #c8a678 #1c3a3b; scrollbar-width: thin; }
   border-radius: 255px 14px 225px 14px / 14px 225px 14px 255px;
 }
 ::-webkit-scrollbar-thumb:hover { background: #f0aa3c; }
+
+/* ---------- the harbour, alive ---------- */
+.halo { transform-box: view-box; transform-origin: 1110px 382px; animation: halo 4.5s ease-in-out infinite; }
+.flame { animation: flicker 3.2s steps(1, end) infinite; }
+.pool { animation: pool 4.5s ease-in-out infinite; }
+.glint { animation: glint 2.6s ease-in-out infinite; }
+.water { animation: drift 7s ease-in-out infinite alternate; }
+.water--1 { animation-duration: 9s; animation-delay: -3s; }
+.water--2 { animation-duration: 11s; animation-delay: -6s; animation-direction: alternate-reverse; }
+.bird { animation: fly var(--dur) linear var(--delay) infinite; }
+.wings { transform-box: fill-box; transform-origin: center; scale: var(--size); animation: flap .7s ease-in-out infinite alternate; }
+.bird:nth-child(2n) .wings { animation-duration: .55s; }
+
+@keyframes halo {
+  0%, 100% { opacity: .85; transform: scale(.97) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.04) rotate(2deg); }
+}
+@keyframes flicker {
+  0%, 100% { opacity: 1; } 47% { opacity: .75; } 50% { opacity: 1; } 82% { opacity: .85; }
+}
+@keyframes pool { 0%, 100% { opacity: .7; } 50% { opacity: 1; } }
+@keyframes glint { 0%, 100% { opacity: .65; } 50% { opacity: 1; } }
+@keyframes drift { from { transform: translateX(-10px); } to { transform: translateX(10px); } }
+@keyframes fly {
+  from { transform: translate(-40px, var(--y)); }
+  50% { transform: translate(800px, calc(var(--y) - 24px)); }
+  to { transform: translate(1660px, calc(var(--y) + 8px)); }
+}
+@keyframes flap { from { transform: scaleY(1); } to { transform: scaleY(-.5); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .halo, .flame, .pool, .glint, .water, .wings { animation: none; }
+  .birds { display: none; }
+}

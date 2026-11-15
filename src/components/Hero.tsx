@@ -5,6 +5,31 @@ import type { Translation } from "../i18n";
 import { ico } from "./icons";
 import { Grain, Tear } from "./Sketch";
 
+// little birds crossing the night sky: [height, seconds to cross, start offset, size]
+const BIRDS = [
+  [150, 38, -4, 1],
+  [178, 38, -6.5, 0.8],
+  [118, 52, -30, 0.9],
+  [262, 46, -18, 0.75],
+  [92, 61, -47, 1.1],
+] as const;
+
+function Birds() {
+  return (
+    <g class="birds" fill="none" stroke="#efe6cf" stroke-width="1.6" stroke-linecap="round">
+      {BIRDS.map(([y, dur, delay, size]) => (
+        <g
+          key={delay}
+          class="bird"
+          style={`--y:${y}px;--dur:${dur}s;--delay:${delay}s;--size:${size * 1.6}`}
+        >
+          <path class="wings" d="M-9 1Q-5 -6 0 0Q5 -6 9 1" />
+        </g>
+      ))}
+    </g>
+  );
+}
+
 type Props = { t: Translation; otherLang: { href: string; hreflang: string } };
 
 export function Hero({ t, otherLang }: Props) {
@@ -25,6 +50,7 @@ export function Hero({ t, otherLang }: Props) {
           stroke-linejoin="round"
           dangerouslySetInnerHTML={{ __html: scenes.hero }}
         />
+        <Birds />
         <text
           x="1172"
           y="318"
@@ -86,7 +112,6 @@ export function Hero({ t, otherLang }: Props) {
           </a>
         </div>
       </div>
-
 
       <Tear index={0} fiber="#e9dcc0" paper="#c8a678" />
     </section>

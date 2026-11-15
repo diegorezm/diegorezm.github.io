@@ -379,6 +379,9 @@ export function buildScenes(): Scenes {
     ],
     { w: 1.6, a: 0.9 },
   );
+  // ripples are split into groups so they can drift out of step (see .water in CSS)
+  const waves = [0, 1, 2].map((k) => group(S, { class: `water water--${k}` }));
+  const glint = group(S, { class: "glint" });
   for (let i = 0; i < 360; i++) {
     const t = rnd() ** 1.5;
     const y = 654 + t * 215;
@@ -386,7 +389,7 @@ export function buildScenes(): Scenes {
     const len = 8 + t * 44;
     const warm = Math.abs(x + len / 2 - 1112) < 12 + t * 44 && rnd() < 0.85;
     sk(
-      S,
+      warm ? glint : waves[i % 3],
       [
         [x, y],
         [x + len, y + jit(1)],
@@ -656,13 +659,14 @@ export function buildScenes(): Scenes {
     hx = x1 + (rnd() < 0.3 ? 10 : 0);
   }
 
-  // street lamp: a coloured-pencil halo
+  // street lamp: a coloured-pencil halo (flickers, see .halo in CSS)
+  const halo = group(S, { class: "halo" });
   for (let i = 0; i < 150; i++) {
     const ang = rnd() * Math.PI * 2;
     const r0 = 26 + rnd() * 26;
     const r1 = r0 + 14 + rnd() * 90 * rnd();
     sk(
-      S,
+      halo,
       [
         [1110 + Math.cos(ang) * r0, 382 + Math.sin(ang) * r0],
         [1110 + Math.cos(ang) * r1, 382 + Math.sin(ang) * r1],
@@ -670,7 +674,7 @@ export function buildScenes(): Scenes {
       { c: ink.LAMP, w: 1 + rnd() * 1.2, op: 0.16 + rnd() * 0.36, a: 1.2, passes: 1 },
     );
   }
-  hatch(S, "M1098 364h24l-5 34h-14Z", [1096, 362, 1124, 400], {
+  hatch(group(S, { class: "flame" }), "M1098 364h24l-5 34h-14Z", [1096, 362, 1124, 400], {
     c: "#ffd98a",
     gap: 1.8,
     op: 1,
@@ -748,11 +752,12 @@ export function buildScenes(): Scenes {
     { w: 1.4, a: 0.4, passes: 1 },
   );
   // pool of light on the quay
+  const pool = group(S, { class: "pool" });
   for (let i = 0; i < 26; i++) {
     const x = 1040 + rnd() * 140;
     const len = 10 + rnd() * 26;
     sk(
-      S,
+      pool,
       [
         [x, 596 - rnd() * 3],
         [x + len, 596 - rnd() * 3],
